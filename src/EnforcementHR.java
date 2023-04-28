@@ -113,23 +113,30 @@ public class EnforcementHR {
                             case 1:
                             updateName(rosterEmployees, search);
                             break;
+
                             case 2:
                             updateAddress(rosterEmployees, search);
                             break;
+
                             case 3:
                             updateSalary(rosterEmployees, search);
                             break;
+
                             case 4:
                             updatePosition(rosterEmployees, search);
                             break;
+
                             case 5:
                             updatePhone(rosterEmployees, search);
                             break;
+
                             case 6:
                             updateEmployeeTypeData(rosterEmployees, search);
                             break;
+
                             case 7:
                             break;
+                            
                             default:
                             JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
                         }
