@@ -52,18 +52,21 @@ public class Agent extends Employee {
     }
 
     public void setRank(String rank){
+        //if rank is null or empty
+        if(rank == null || rank.isEmpty()) {
+            throw new IllegalArgumentException("Rank cannot be empty!");
+        }
         this.rank = rank;
     }
 
     //special methods
     public String toString(){
-        return super.toString() + "\nRadio Number: " + radioNum + "\nAssignment Number: " + assignNum + "\nRank: " + rank;
+        return super.toString() + "Agent";
     }
 
-    public int updateNumAgents(){
+    public void updateNumAgents(){
         //Subtracts one from number of Agents and Employees
         numAgents--;
-        return numAgents;
     }
     
 }

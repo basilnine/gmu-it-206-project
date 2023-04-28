@@ -1,4 +1,4 @@
-import javax.swing.*;
+
 
 public abstract class Employee {
     private String id;
@@ -17,8 +17,10 @@ public abstract class Employee {
     protected static int numEmployees;
 
     private static int idTrack;
+    private final int MAX_INVENTORY_ITEM = 3;
+    private InventoryItem[] Inventory = new InventoryItem[MAX_INVENTORY_ITEM];
 
-    static final int MAX_EMPLOYEES = 100;
+    private static final int MAX_EMPLOYEES = 100;
 
     public Employee(String firstName, String lastName, String addressStreet, String addressCity, String addressState, String addressZip, String phoneNumber, String workTitle, double salary, String fieldOffice) {
         setID();
@@ -252,7 +254,7 @@ public abstract class Employee {
 
     public void setWorkEmail() {
         //first letter of first name, last name, last two numbers of ID and then grab the last digit of number of employees
-        String email = getFirstName().substring(0, 1) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
+        String email = getFirstName().charAt(0) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
         this.workEmail = email.toLowerCase() + "@agency.gov";
 
     }
@@ -285,12 +287,29 @@ public abstract class Employee {
         return output;
     }
 
-   public String addressToString() {
-       return getAddressStreet() + ", " + getAddressCity() + ", " + getAddressState() + " " + getAddressZip();
-   }
+    public String addressToString() {
+        return getAddressStreet() + ", " + getAddressCity() + ", " + getAddressState() + " " + getAddressZip();
+    }
 
-   public String fullNameToString() {
-       return getFirstName() + " " + getLastName();
-   }
+    public String fullNameToString() {
+        return getFirstName() + " " + getLastName();
+    }
 
+    public void addInventoryItem(String empID, int type) {
+        if (Inventory.length < MAX_INVENTORY_ITEM) {
+            Inventory[(Inventory.length + 1)] = new InventoryItem(empID, type);
+        } else {
+            throw new IllegalArgumentException("Inventory is full");
+        }
+    }
+
+    public void removeInventoryItem(InventoryItem item) {
+        if (Inventory.length > 0) {
+            Inventory[(Inventory.length - 1)] = null;
+        } else {
+            throw new IllegalArgumentException("Inventory is empty");
+        }
+
+
+    }
 }
