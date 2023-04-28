@@ -1,6 +1,6 @@
 public class LabSpecialist extends Employee {
     private String labNum;
-    private int numLabSpecialists;
+    private static int numLabSpecialists;
 
     public LabSpecialist(String firstName, String lastName, String addressStreet, String addressCity, String addressState, String addressZIP, String phone, String workTitle, double salary, String fieldOffice, String labNum){
         super(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice);
@@ -13,7 +13,7 @@ public class LabSpecialist extends Employee {
         return labNum;
     }
 
-    public int getNumLabSpecialists(){
+    public static int getNumLabSpecialists(){
         return numLabSpecialists;
     }
 

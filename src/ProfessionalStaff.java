@@ -1,6 +1,6 @@
 public class ProfessionalStaff extends Employee {
     private String cubicleNum;
-    private int numProfStaff;
+    private static int numProfStaff;
 
     public ProfessionalStaff(String firstName, String lastName, String addressStreet, String addressCity, String addressState, String addressZIP, String phone, String workTitle, double salary, String fieldOffice, String cubicleNum){
         super(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice);
@@ -13,7 +13,7 @@ public class ProfessionalStaff extends Employee {
         return cubicleNum;
     }
 
-    public int getNumProfStaff(){
+    public static int getNumProfStaff(){
         return numProfStaff;
     }
 

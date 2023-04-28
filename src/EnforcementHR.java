@@ -317,41 +317,90 @@ public class EnforcementHR {
     }
 
     public static void searchEmployee(Employee[] rosterEmployees){
-        int index = -1;
-        String menu = "** Search Employee **\n\n1. Search by ID\n2. Search by Name\n3. Search by Phone\n4. Search by Email\n5. Exit";
-        switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-            case 1:
-            String id = JOptionPane.showInputDialog("Enter ID:");
-            index = searchEmployeeByID(rosterEmployees, id);
-            printEmployeeReport(rosterEmployees, index);
-            break;
+        if (Employee.getNumEmployees() > 0){
+            int index = -1;
+            String menu = "** Search Employee **\n\n1. Search by ID\n2. Search by Name\n3. Search by Phone\n4. Search by Email\n5. Exit";
+            try{
+                switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                    case 1:
+                    String id = JOptionPane.showInputDialog("Enter ID:");
+                    index = searchEmployeeByID(rosterEmployees, id);
+                    printEmployeeReport(rosterEmployees, index);
+                    break;
 
-            case 2:
-            String name = JOptionPane.showInputDialog("Enter full name:");
-            index = searchEmployeeByName(rosterEmployees, name);
-            printEmployeeReport(rosterEmployees, index);
-            break;
+                    case 2:
+                    String name = JOptionPane.showInputDialog("Enter full name:");
+                    index = searchEmployeeByName(rosterEmployees, name);
+                    printEmployeeReport(rosterEmployees, index);
+                    break;
 
-            case 3:
-            String phone = JOptionPane.showInputDialog("Enter phone number:");
-            index = searchEmployeeByPhone(rosterEmployees, phone);
-            break;
+                    case 3:
+                    String phone = JOptionPane.showInputDialog("Enter phone number:");
+                    index = searchEmployeeByPhone(rosterEmployees, phone);
+                    break;
 
-            case 4:
-            String email = JOptionPane.showInputDialog("Enter email:");
-            index = searchEmployeeByEmail(rosterEmployees, email);
-            printEmployeeReport(rosterEmployees, index);
-            break;
+                    case 4:
+                    String email = JOptionPane.showInputDialog("Enter email:");
+                    index = searchEmployeeByEmail(rosterEmployees, email);
+                    printEmployeeReport(rosterEmployees, index);
+                    break;
 
-            case 5:
-            break;
+                    case 5:
+                    break;
 
-            default:
-            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 5!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    default:
+                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 5!", "Error!", JOptionPane.ERROR_MESSAGE);
 
+                }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    public static void generateReports(Employee[] rosterEmployees){
+        if (Employee.getNumEmployees() > 0){
+            String menu = "** Generate Reports **\n\n1. Organization Report\n2. Inventory Report\n3. Exit";
+            try{
+                switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                    case 1:
+                    generateOrgReport(rosterEmployees);
+                    break;
+                    
+                    case 2:
+                    //generateInventoryReport(rosterEmployees);
+                    break;
+
+                    case 3:
+                    break;
+
+                    default:
+                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 3!", "Error!", JOptionPane.ERROR_MESSAGE);
+                }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
+    public static void generateOrgReport(Employee[] rosterEmployees){
+        String report = "** Organization Report **\n\nEmployee Stats:\nNumber of Employees: " + Employee.getNumEmployees() +
+        "\nNumber of Agents: " + Agent.getNumAgents() + "\nNumber of Lab Specialists: " + LabSpecialist.getNumLabSpecialists() +
+        "\nNumber of Professional Specialists: " + ProfessionalStaff.getNumProfStaff();
+        report += "\n\nEmployee list:\n";
+        double salary = 0;
+        for (int i = 0; i < Employee.getNumEmployees(); i++){
+            report += rosterEmployees[i].toString() + "\n";
+            salary += rosterEmployees[i].getSalary();
+        }
+        report += "\n\nTotal Employee Budget: " + String.format("$%.2", salary);
+        JOptionPane.showMessageDialog(null, report, "Organization Report", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 }
