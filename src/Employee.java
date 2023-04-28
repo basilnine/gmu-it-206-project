@@ -173,19 +173,21 @@ public abstract class Employee {
     }
 
     public void setAddressCity(String addressCity) {
-        if(addressCity == null || addressCity.isEmpty()){
-            throw new IllegalArgumentException("City cannot be empty");
-        } else if(addressCity.matches(".*\\d.*")){
-            throw new IllegalArgumentException("City cannot contain a number");
-        } else if(addressCity.matches("[^a-zA-Z0-9 ]")){
-            throw new IllegalArgumentException("City cannot contain a special character");
-        } else {
-            this.addressCity = addressCity;
-        }
+        
     }
 
     public void setAddressState(String addressState) {
-        //two letter
+        if(addressState.length() != 2){
+            throw new IllegalArgumentException("State must be two characters");
+        } else if(addressState.charAt(0) != addressState.toUpperCase().charAt(0) && addressState.charAt(1) != addressState.toUpperCase().charAt(1)){
+            throw new IllegalArgumentException("State must be capitalized");
+        } //if state has a number, throw an exception
+        else if(addressState.matches(".*\\d.*")){
+            throw new IllegalArgumentException("State cannot contain a number");
+        } //if state has a special character, throw an exception
+        else if(addressState.matches("[^a-zA-Z0-9 ]")){
+            throw new IllegalArgumentException("State cannot contain a special character");
+        }
 
     }
 
