@@ -8,7 +8,7 @@ public class EnforcementHR {
             try{
                 switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
                     case 1:
-                    //addEmployee(employeeRoster);
+                    addEmployee(employeeRoster);
                     break;
                     case 2:
                     //updateEmployee(employeeRoster);
@@ -165,7 +165,42 @@ public class EnforcementHR {
     }
 
     public static void updateSalary(Employee[] rosterEmployees, int search){
-        
+        double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
+        rosterEmployees[search].setSalary(salary);
+        JOptionPane.showMessageDialog(null, "Salary has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void updatedPosition(Employee[] rosterEmployees, int search){
+        String position = JOptionPane.showInputDialog("Enter positon:");
+        int choice = JOptionPane.showConfirmDialog(null, "Does this new position come with a salary update?", "", JOptionPane.YES_NO_OPTION);
+        rosterEmployees[search].setWorkTitle(position);
+        if (choice == JOptionPane.YES_OPTION){
+            double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
+            rosterEmployees[search].setSalary(salary);
+            JOptionPane.showMessageDialog(null, "Position and Salary has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        } 
+        else {
+            JOptionPane.showMessageDialog(null, "Position has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public static void updatePhone(Employee[] rosterEmployees, int search){
+        String phone = JOptionPane.showInputDialog("Enter phone number:");
+        rosterEmployees[search].setPhoneNumber(phone);
+        JOptionPane.showMessageDialog(null, "Phone number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void updateEmployeeTypeData(Employee[] rosterEmployees, int search){
+        if (rosterEmployees[search] instanceof Agent){
+            String menu = "Update Agent Data:\n\n1. Update Radio Number\n2. Update Assignment Number\n3. Update Rank";
+            switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                case 1:
+                String radioNum = JOptionPane.showInputDialog("Enter radio number:");
+                rosterEmployees[search].setRadioNum(menu);
+                break;
+                
+            }
+        }
     }
 
     public static void removeEmployee(Employee[] rosterEmployees){
