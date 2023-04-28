@@ -14,11 +14,11 @@ public abstract class Employee {
     private String workEmail;
     private String fieldOffice;
     private boolean isActive;
-    protected int numEmployees;
+    protected static int numEmployees;
 
     private static int idTrack;
 
-    final int MAX_EMPLOYEES = 100;
+    static final int MAX_EMPLOYEES = 100;
 
     public Employee(String firstName, String lastName, String addressStreet, String addressCity, String addressState, String addressZip, String phoneNumber, String workTitle, double salary, String fieldOffice) {
         setID();
@@ -92,15 +92,15 @@ public abstract class Employee {
         return isActive;
     }
 
-    protected int getNumEmployees() {
+    public static int getNumEmployees() {
         return numEmployees;
     }
 
-    public int getMaxEmployees() {
+    public static int getMaxEmployees() {
         return MAX_EMPLOYEES;
     }
 
-    public int getIdTrack() {
+    public static int getIdTrack() {
         return idTrack;
     }
 
@@ -128,7 +128,6 @@ public abstract class Employee {
         } else {
             this.id = id;
         }
-        this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -149,20 +148,19 @@ public abstract class Employee {
     }
 
     public void setLastName(String lastName){
-        //validate that the first letter is capitalized
-        if(lastName.charAt(0) != lastName.toUpperCase().charAt(0)){
+        if(lastName == null || lastName.isEmpty()){
+            throw new IllegalArgumentException("Last name cannot be empty");
+        } else if(lastName.charAt(0) != lastName.toUpperCase().charAt(0)){
             throw new IllegalArgumentException("Last name must be capitalized");
-        } //if last name has a space,throw an exception
-        else if(lastName.contains(" ")){
+        } else if(lastName.contains(" ")){
             throw new IllegalArgumentException("Last name cannot contain a space");
-        } //if last name has a number, throw an exception
-        else if(lastName.matches(".*\\d.*")){
+        } else if(lastName.matches(".*\\d.*")){
             throw new IllegalArgumentException("Last name cannot contain a number");
-        } //if last name has a special character, throw an exception
-        else if(lastName.matches("[^a-zA-Z0-9 ]")){
+        } else if(lastName.matches("[^a-zA-Z0-9 ]")){
             throw new IllegalArgumentException("Last name cannot contain a special character");
+        } else {
+            this.lastName = lastName;
         }
-        this.lastName = lastName;
     }
 
     public void setAddressStreet(String addressStreet) {
@@ -173,26 +171,43 @@ public abstract class Employee {
     }
 
     public void setAddressCity(String addressCity) {
+        if (addressCity == null || addressCity.isEmpty()) {
+            throw new IllegalArgumentException("City cannot be empty");
+        }else if(addressCity.charAt(0) != addressCity.toUpperCase().charAt(0)){
+            throw new IllegalArgumentException("City must be capitalized");
+        } else if(addressCity.matches(".*\\d.*")){
+            throw new IllegalArgumentException("City cannot contain a number");
+        } else if(addressCity.matches("[^a-zA-Z0-9 ]")){
+            throw new IllegalArgumentException("City cannot contain a special character");
+        }
+        this.addressCity = addressCity;
 
     }
 
     public void setAddressState(String addressState) {
-        if(addressState.length() != 2){
+        if (addressState == null || addressState.isEmpty()) {
+            throw new IllegalArgumentException("State cannot be empty");
+        } else if(addressState.length() != 2){
             throw new IllegalArgumentException("State must be two characters");
         } else if(addressState.charAt(0) != addressState.toUpperCase().charAt(0) && addressState.charAt(1) != addressState.toUpperCase().charAt(1)){
             throw new IllegalArgumentException("State must be capitalized");
-        } //if state has a number, throw an exception
-        else if(addressState.matches(".*\\d.*")){
+        } else if(addressState.matches(".*\\d.*")){
             throw new IllegalArgumentException("State cannot contain a number");
-        } //if state has a special character, throw an exception
-        else if(addressState.matches("[^a-zA-Z0-9 ]")){
+        } else if(addressState.matches("[^a-zA-Z0-9 ]")){
             throw new IllegalArgumentException("State cannot contain a special character");
         }
 
     }
 
     public void setAddressZip(String addressZip) {
-        //five digit limit
+        //five-digit limit and no letters
+        if(addressZip == null || addressZip.isEmpty()){
+            throw new IllegalArgumentException("Zip code cannot be empty");
+        } else if(addressZip.length() != 5){
+            throw new IllegalArgumentException("Zip code must be 5 digits");
+        } else if(addressZip.matches(".*[a-zA-Z]+.*")){
+            throw new IllegalArgumentException("Zip code cannot contain letters");
+        }
         this.addressZip = addressZip;
     }
 
