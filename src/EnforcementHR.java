@@ -153,7 +153,7 @@ public class EnforcementHR {
                 for (int i = search; i < Employee.getNumEmployees(); i++){
                     rosterEmployees[i] = rosterEmployees[i+1];
                 }
-                Employee.updateNumEmployee();
+                Employee.updateNumEmployees();
                 JOptionPane.showMessageDialog(null, "Employee ID: " + id + " has been deleted!", "Deleted!", JOptionPane.WARNING_MESSAGE);
             }
         }
