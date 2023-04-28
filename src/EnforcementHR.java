@@ -105,41 +105,67 @@ public class EnforcementHR {
                 if (rosterEmployees[search] instanceof LabSpecialist){
                     menu += "\n6. Update Lab Specialist Data";
                 }
-                menu += "\n7. Quit";
+                menu += "\n7. Exit";
                 int choice = 0;
-                try{
-                    switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                        case 1:
-                        //updateName(employeeRoster);
-                        break;
-                        case 2:
-                        //updateAddress(employeeRoster);
-                        break;
-                        case 3:
-                        //updateSalary(employeeRoster);
-                        break;
-                        case 4:
-                        //updatePosition(employeeRoster);
-                        break;
-                        case 5:
-                        //updatePhone(employeeRoster);
-                        break;
-                        case 6:
-                        //updateEmployeeTypeData(employeeRoster);
-                        break;
-                        case 7:
-                        break;
-                        default:
-                        JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
+                do{
+                    try{
+                        switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                            case 1:
+                            updateName(rosterEmployees, search);
+                            break;
+                            case 2:
+                            //updateAddress(rosterEmployees, search);
+                            break;
+                            case 3:
+                            //updateSalary(rosterEmployees, search);
+                            break;
+                            case 4:
+                            //updatePosition(rosterEmployees, search);
+                            break;
+                            case 5:
+                            //updatePhone(rosterEmployees, search);
+                            break;
+                            case 6:
+                            //updateEmployeeTypeData(rosterEmployees, search);
+                            break;
+                            case 7:
+                            break;
+                            default:
+                            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                }catch(Exception e){
-
-                }
+                }while(choice != 7);
             }
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public static void updateName(Employee[] rosterEmployees, int search){
+        String firstName = JOptionPane.showInputDialog("Enter first name:");
+        String lastName = JOptionPane.showInputDialog("Enter last name:");
+        rosterEmployees[search].setFirstName(firstName);
+        rosterEmployees[search].setLastName(lastName);
+        JOptionPane.showMessageDialog(null, "Name has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void updateAddress(Employee[] rosterEmployees, int search){
+        String addressStreet = JOptionPane.showInputDialog("Enter street address:");
+        String addressCity = JOptionPane.showInputDialog("Enter city:");
+        String addressState = JOptionPane.showInputDialog("Enter state:");
+        String addressZIP = JOptionPane.showInputDialog("Enter zip code:");
+        rosterEmployees[search].setAddressStreet(addressStreet);
+        rosterEmployees[search].setAddressCity(addressCity);
+        rosterEmployees[search].setAddressState(addressState);
+        rosterEmployees[search].setAddressZip(addressZIP);
+        JOptionPane.showMessageDialog(null, "Address has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public static void updateSalary(Employee[] rosterEmployees, int search){
+        
     }
 
     public static void removeEmployee(Employee[] rosterEmployees){
