@@ -173,7 +173,7 @@ public abstract class Employee {
     }
 
     public void setAddressCity(String addressCity) {
-        
+
     }
 
     public void setAddressState(String addressState) {
