@@ -39,6 +39,7 @@ public class EnforcementHR {
     }
 
     public static void addEmployee(Employee[] employeeRoster){
+
         if (Employee.getNumEmployees() <= Employee.getMaxEmployees()){
             String firstName = JOptionPane.showInputDialog("Enter First Name:");
             String lastName = JOptionPane.showInputDialog("Enter Last Name:");
@@ -57,8 +58,63 @@ public class EnforcementHR {
                 String radioNum = JOptionPane.showInputDialog("Enter Radio Number:");
                 String assignNum = JOptionPane.showInputDialog("Enter Assignment Number:");
                 String rank = JOptionPane.showInputDialog("Enter Rank:");
+                employeeRoster[Employee.getNumEmployees()] = new Agent(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, radioNum, assignNum, rank);
             }
-
+            else if (response == 1){
+                String cubicleNum = JOptionPane.showInputDialog("Enter Cubicle Number:");
+                employeeRoster[Employee.getNumEmployees()] = new ProfessionalStaff(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, cubicleNum);
+            }
+            else if (response == 2){
+                String labNum = JOptionPane.showInputDialog("Enter Lab Number:");
+                employeeRoster[Employee.getNumEmployees()] = new LabSpecialist(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, labNum);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Must choose a valid employee type!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Maximum Number of Employees Met!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public static int searchEmployeeByID(Employee[] rosterEmployees, String id){
+        int index = -1;
+        for (int i = 0; i < Employee.getNumEmployees(); i++){
+            if (id.equalsIgnoreCase(rosterEmployees[i].getId())){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public static void updateEmployee(Employee[] rosterEmployees){
+        if (Employee.getNumEmployees() > 0){
+
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void removeEmployee(Employee[] rosterEmployees){
+        if (Employee.getNumEmployees() > 0){
+            String id = JOptionPane.showInputDialog("Enter Employee ID you would like to remove:");
+            int search = searchEmployeeByID(rosterEmployees, id);
+            if (search == -1){
+                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                for (int i = search; i < Employee.getNumEmployees(); i++){
+                    rosterEmployees[i] = rosterEmployees[i+1];
+                }
+                Employee.updateNumEmployee();
+                JOptionPane.showMessageDialog(null, "Employee ID: " + id + " has been deleted!", "Deleted!", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
 }
