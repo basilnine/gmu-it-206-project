@@ -251,7 +251,9 @@ public abstract class Employee {
 
     public void setWorkEmail() {
         //first letter of first name, last name, last two numbers of ID and then grab the last digit of number of employees
-        this.workEmail = workEmail;
+        String email = getFirstName().substring(0,1) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
+        this.workEmail = email.toLowerCase() + "@company.com";
+
     }
 
     public void setFieldOffice(String fieldOffice) {
