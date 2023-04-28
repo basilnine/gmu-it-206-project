@@ -16,7 +16,7 @@ public abstract class Employee {
     private boolean isActive;
     protected static int numEmployees;
 
-    private static int idTrack;
+    private static int idTrack = 0;
     private final int MAX_INVENTORY_ITEM = 3;
     private InventoryItem[] Inventory = new InventoryItem[MAX_INVENTORY_ITEM];
 
@@ -109,26 +109,26 @@ public abstract class Employee {
 
     public void setID() {
         //generate an ID with a 3 digit
-        String id = "LE";
-        if (id.length() == 1) {
-            id += "0000000" + (getIdTrack() + 1);
-        } else if (id.length() == 2) {
-            id += "000000" + (getIdTrack() + 1);
-        } else if (id.length() == 3) {
-            id += "00000" + (getIdTrack() + 1);
+        String id = "LE" + getIdTrack();
+        if (id.length() == 3) {
+            id = "LE0000000" + (getIdTrack() + 1);
         } else if (id.length() == 4) {
-            id += "0000" + (getIdTrack() + 1);
+            id = "LE000000" + (getIdTrack() + 1);
         } else if (id.length() == 5) {
-            id += "000" + (getIdTrack() + 1);
+            id = "LE00000" + (getIdTrack() + 1);
         } else if (id.length() == 6) {
-            id += "00" + (getIdTrack() + 1);
+            id = "LE0000" + (getIdTrack() + 1);
         } else if (id.length() == 7) {
-            id += "0" + (getIdTrack() + 1);
+            id = "LE000" + (getIdTrack() + 1);
         } else if (id.length() == 8) {
-            id += (getIdTrack() + 1);
-        } else {
-            this.id = id;
+            id = "LE00" + (getIdTrack() + 1);
+        } else if (id.length() == 9) {
+            id = "LE0" + (getIdTrack() + 1);
+        } else{
+            id = "LE" + (getIdTrack() + 1);
         }
+
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
