@@ -28,7 +28,7 @@ public class EnforcementHR {
                     case 7:
                     break;
                     default:
-                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 6!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
             }catch(Exception e){
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
@@ -89,7 +89,53 @@ public class EnforcementHR {
 
     public static void updateEmployee(Employee[] rosterEmployees){
         if (Employee.getNumEmployees() > 0){
+            String id = JOptionPane.showInputDialog("Enter Employee ID:");
+            int search = searchEmployeeByID(rosterEmployees, id);
+            if (search == -1){
+                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String menu = "** Update Employee Data **\n\n1. Update Name\n.2. Update Address\n3. Salary\n4. Update Position\n5. Update Phone Number";
+                if (rosterEmployees[search] instanceof Agent){
+                    menu += "\n6. Update Agent Data";
+                }
+                if (rosterEmployees[search] instanceof ProfessionalStaff){
+                    menu += "\n6. Update Professional Staff Data";
+                }
+                if (rosterEmployees[search] instanceof LabSpecialist){
+                    menu += "\n6. Update Lab Specialist Data";
+                }
+                menu += "\n7. Quit";
+                int choice = 0;
+                try{
+                    switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                        case 1:
+                        //updateName(employeeRoster);
+                        break;
+                        case 2:
+                        //updateAddress(employeeRoster);
+                        break;
+                        case 3:
+                        //updateSalary(employeeRoster);
+                        break;
+                        case 4:
+                        //updatePosition(employeeRoster);
+                        break;
+                        case 5:
+                        //updatePhone(employeeRoster);
+                        break;
+                        case 6:
+                        //updateEmployeeTypeData(employeeRoster);
+                        break;
+                        case 7:
+                        break;
+                        default:
+                        JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                }catch(Exception e){
 
+                }
+            }
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -116,5 +162,7 @@ public class EnforcementHR {
         }
 
     }
+
+    
 
 }
