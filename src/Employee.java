@@ -41,7 +41,6 @@ public abstract class Employee {
     }
 
     //accessors
-
     public String getId() {
         return id;
     }
@@ -187,6 +186,7 @@ public abstract class Employee {
     }
 
     public void setAddressState(String addressState) {
+        //two-character limit, capitalized, no numbers, no special characters
         if (addressState == null || addressState.isEmpty()) {
             throw new IllegalArgumentException("State cannot be empty");
         } else if (addressState.length() != 2) {
@@ -240,6 +240,7 @@ public abstract class Employee {
     }
 
     public void setSalary(double salary) {
+        //salary cannot be negative
         if (salary < 0) {
             throw new IllegalArgumentException("Salary cannot be negative");
         } //if salary contains letters
@@ -260,6 +261,7 @@ public abstract class Employee {
     }
 
     public void setFieldOffice(String fieldOffice) {
+        //field office cannot be empty, cannot contain numbers, cannot contain special characters
         if (fieldOffice == null || fieldOffice.isEmpty()) {
             throw new IllegalArgumentException("Field office cannot be empty");
         } else if (fieldOffice.matches(".*\\d.*")) {
@@ -296,6 +298,7 @@ public abstract class Employee {
     }
 
     public void addInventoryItem(String empID, int type) {
+        //if inventory is not full, add item
         if (Inventory.length < MAX_INVENTORY_ITEM) {
             Inventory[(Inventory.length + 1)] = new InventoryItem(empID, type);
         } else {
@@ -304,6 +307,7 @@ public abstract class Employee {
     }
 
     public void removeInventoryItem(InventoryItem item) {
+        //if inventory is not empty, remove item
         if (Inventory.length > 0) {
             Inventory[(Inventory.length - 1)] = null;
         } else {
