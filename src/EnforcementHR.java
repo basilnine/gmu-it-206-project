@@ -40,6 +40,17 @@ public class EnforcementHR {
 
     public static void addEmployee(Employee[] employeeRoster){
         if (Employee.getNumEmployees() <= Employee.getMaxEmployees()){
+            String firstName = JOptionPane.showInputDialog("Enter First Name:");
+            String lastName = JOptionPane.showInputDialog("Enter Last Name:");
+            String addressStreet = JOptionPane.showInputDialog("Enter Street Number and Name:");
+            String addressCity = JOptionPane.showInputDialog("Enter city name:");
+            String addressState = JOptionPane.showInputDialog("Enter state initials:");
+            String addressZIP = JOptionPane.showInputDialog("Enter ZIP code:");
+            String phone = JOptionPane.showInputDialog("Enter phone number format: (xxx) xxx xxx:");
+            String workTitle = JOptionPane.showInputDialog("Enter work title:");
+            double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
+            String fieldOffice = JOptionPane.showInputDialog("Enter Field Office Location:");
+            
 
         }
     }
