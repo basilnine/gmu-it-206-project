@@ -114,19 +114,19 @@ public class EnforcementHR {
                             updateName(rosterEmployees, search);
                             break;
                             case 2:
-                            //updateAddress(rosterEmployees, search);
+                            updateAddress(rosterEmployees, search);
                             break;
                             case 3:
-                            //updateSalary(rosterEmployees, search);
+                            updateSalary(rosterEmployees, search);
                             break;
                             case 4:
-                            //updatePosition(rosterEmployees, search);
+                            updatePosition(rosterEmployees, search);
                             break;
                             case 5:
-                            //updatePhone(rosterEmployees, search);
+                            updatePhone(rosterEmployees, search);
                             break;
                             case 6:
-                            //updateEmployeeTypeData(rosterEmployees, search);
+                            updateEmployeeTypeData(rosterEmployees, search);
                             break;
                             case 7:
                             break;
@@ -170,7 +170,7 @@ public class EnforcementHR {
         JOptionPane.showMessageDialog(null, "Salary has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
     }
 
-    public static void updatedPosition(Employee[] rosterEmployees, int search){
+    public static void updatePosition(Employee[] rosterEmployees, int search){
         String position = JOptionPane.showInputDialog("Enter positon:");
         int choice = JOptionPane.showConfirmDialog(null, "Does this new position come with a salary update?", "", JOptionPane.YES_NO_OPTION);
         rosterEmployees[search].setWorkTitle(position);
@@ -194,12 +194,33 @@ public class EnforcementHR {
         if (rosterEmployees[search] instanceof Agent){
             String menu = "Update Agent Data:\n\n1. Update Radio Number\n2. Update Assignment Number\n3. Update Rank";
             switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
+                //TEST DOWNCAST --- 
                 case 1:
                 String radioNum = JOptionPane.showInputDialog("Enter radio number:");
-                rosterEmployees[search].setRadioNum(menu);
+                ((Agent)rosterEmployees[search]).setRadioNum(radioNum);
                 break;
-                
+
+                case 2:
+                String assignNum = JOptionPane.showInputDialog("Enter assignment number:");
+                ((Agent)rosterEmployees[search]).setAssignNum(assignNum);
+                break;
+
+                case 3:
+                String rank = JOptionPane.showInputDialog("Enter rank:");
+                ((Agent)rosterEmployees[search]).setRank(rank);
+                break;
+
+                default:
+                JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 3!", "Error!", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        if (rosterEmployees[search] instanceof LabSpecialist){
+            String labNum = JOptionPane.showInputDialog("Enter lab number:");
+            ((LabSpecialist)rosterEmployees[search]).setLabNum(labNum);
+        }
+        if (rosterEmployees[search] instanceof ProfessionalStaff){
+            String cubicleNum = JOptionPane.showInputDialog("Enter cubicle number:");
+            ((ProfessionalStaff)rosterEmployees[search]).setCubicleNum(cubicleNum);
         }
     }
 
