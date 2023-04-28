@@ -42,6 +42,14 @@ public class EnforcementHR {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }while(choice != 7);
+        JOptionPane.showMessageDialog(null, "Powering off..");
+        System.exit(0);
+    }
+
+    public static void addEmployee(Employee[] employeeRoster){
+        if (Employee.getNumEmployees <= Employee.getMAX_EMPLOYEE()){
+
+        }
     }
     
 }
