@@ -212,14 +212,40 @@ public abstract class Employee {
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        // Phone, format must be xxx-xxx-xxxx
+        if(phoneNumber == null || phoneNumber.isEmpty()){
+            throw new IllegalArgumentException("Phone number cannot be empty");
+        } else if(phoneNumber.length() != 12){
+            throw new IllegalArgumentException("Phone number must be 12 digits");
+        } else if(phoneNumber.charAt(3) != '-' || phoneNumber.charAt(7) != '-'){
+            throw new IllegalArgumentException("Phone number must be in the format xxx-xxx-xxxx");
+        } else if(phoneNumber.matches(".*[a-zA-Z]+.*")){
+            throw new IllegalArgumentException("Phone number cannot contain letters");
+        }
         this.phoneNumber = phoneNumber;
     }
 
     public void setWorkTitle(String workTitle) {
+        if (workTitle == null || workTitle.isEmpty()) {
+            throw new IllegalArgumentException("Work title cannot be empty");
+        } else if(workTitle.matches(".*\\d.*")){
+            throw new IllegalArgumentException("Work title cannot contain a number");
+        } else if(workTitle.matches("[^a-zA-Z0-9 ]")){
+            throw new IllegalArgumentException("Work title cannot contain a special character");
+        }
         this.workTitle = workTitle;
     }
 
     public void setSalary(double salary) {
+        if(salary < 0){
+            throw new IllegalArgumentException("Salary cannot be negative");
+        } //if salary contains letters
+        else if(String.valueOf(salary).matches(".*[a-zA-Z]+.*")){
+            throw new IllegalArgumentException("Salary cannot contain letters");
+        } //if salary contains special characters
+        else if(String.valueOf(salary).matches("[^a-zA-Z0-9 ]")){
+            throw new IllegalArgumentException("Salary cannot contain a special character");
+        }
         this.salary = salary;
     }
 
