@@ -17,8 +17,11 @@ public abstract class Employee {
     protected static int numEmployees;
 
     private static int idTrack;
+    private final int MAX_INVENTORY_ITEM = 3;
+    //create a inventory array of 3 items
+    private InventoryItem[] Inventory = new InventoryItem[MAX_INVENTORY_ITEM];
 
-    static final int MAX_EMPLOYEES = 100;
+    private static final int MAX_EMPLOYEES = 100;
 
     public Employee(String firstName, String lastName, String addressStreet, String addressCity, String addressState, String addressZip, String phoneNumber, String workTitle, double salary, String fieldOffice) {
         setID();
@@ -285,12 +288,29 @@ public abstract class Employee {
         return output;
     }
 
-   public String addressToString() {
-       return getAddressStreet() + ", " + getAddressCity() + ", " + getAddressState() + " " + getAddressZip();
-   }
+    public String addressToString() {
+        return getAddressStreet() + ", " + getAddressCity() + ", " + getAddressState() + " " + getAddressZip();
+    }
 
-   public String fullNameToString() {
-       return getFirstName() + " " + getLastName();
-   }
+    public String fullNameToString() {
+        return getFirstName() + " " + getLastName();
+    }
 
+    public void addInventoryItem(String empID, int type) {
+        if (Inventory.length < MAX_INVENTORY_ITEM) {
+            Inventory[(Inventory.length + 1)] = new InventoryItem(empID, type);
+        } else {
+            new IllegalArgumentException("Inventory is full");
+        }
+    }
+
+    public void removeInventoryItem(InventoryItem item) {
+        if (Inventory.length > 0) {
+            Inventory[(Inventory.length - 1)] = null;
+        } else {
+            new IllegalArgumentException("Inventory is empty");
+        }
+
+
+    }
 }
