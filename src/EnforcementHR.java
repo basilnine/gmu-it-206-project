@@ -11,10 +11,10 @@ public class EnforcementHR {
                     addEmployee(employeeRoster);
                     break;
                     case 2:
-                    //updateEmployee(employeeRoster);
+                    updateEmployee(employeeRoster);
                     break;
                     case 3:
-                    //removeEmployee(employeeRoster);
+                    removeEmployee(employeeRoster);
                     break;
                     case 4:
                     //searchEmployee(employeeRoster);
@@ -87,6 +87,36 @@ public class EnforcementHR {
         return index;
     }
 
+    public static int searchEmployeeByName(Employee[] rosterEmployees, String name){
+        int index = -1;
+        for (int i = 0; i < Employee.getNumEmployees(); i++){
+            if (name.equalsIgnoreCase(rosterEmployees[i].fullNameToString())){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public static int searchEmployeeByPhone(Employee[] rosterEmployees, String phone){
+        int index = -1;
+        for (int i = 0; i < Employee.getNumEmployees(); i++){
+            if (phone.equalsIgnoreCase(rosterEmployees[i].getPhoneNumber())){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public static int searchEmployeeByEmail(Employee[] rosterEmployees, String email){
+        int index = -1;
+        for (int i = 0; i < Employee.getNumEmployees(); i++){
+            if (email.equalsIgnoreCase(rosterEmployees[i].getWorkEmail())){
+                index = i;
+            }
+        }
+        return index;
+    }
+
     public static void updateEmployee(Employee[] rosterEmployees){
         if (Employee.getNumEmployees() > 0){
             String id = JOptionPane.showInputDialog("Enter Employee ID:");
@@ -136,7 +166,7 @@ public class EnforcementHR {
 
                             case 7:
                             break;
-                            
+
                             default:
                             JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
                         }
