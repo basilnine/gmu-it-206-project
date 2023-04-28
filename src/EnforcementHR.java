@@ -17,7 +17,7 @@ public class EnforcementHR {
                     removeEmployee(employeeRoster);
                     break;
                     case 4:
-                    searchEmployee(employeeRoster);
+                    //searchEmployee(employeeRoster);
                     break;
                     case 5:
                     //manageInventory(employeeRoster);
@@ -281,77 +281,5 @@ public class EnforcementHR {
         }
 
     }
-
-    public static void printEmployeeReport(Employee[] rosterEmployees, int i){
-        if (i >= 0){
-            String report = "** Employee Report **\n\n";
-            report += "ID: " + rosterEmployees[i].getId() + "\nName: " + rosterEmployees[i].fullNameToString() + "\nAddress:" + rosterEmployees[i].addressToString() +
-            "\nPhone number: " + rosterEmployees[i].getPhoneNumber() + "\nEmail: " + rosterEmployees[i].getWorkEmail() +
-            "\nPosition: " + rosterEmployees[i].getWorkTitle() + "\nSalary: " + rosterEmployees[i].getSalary() +
-            "\nField Office: " + rosterEmployees[i].getFieldOffice() + "\nActivity Status: ";
-
-            if (rosterEmployees[i].getIsActive() == true){
-                report += "True";
-            }
-            else{
-                report += "False";
-            }
-
-            if (rosterEmployees[i] instanceof Agent){
-                report += "\n\nAgent Details:\nRadio Number: " + ((Agent)rosterEmployees[i]).getRadioNum() +
-                "\nAssignment Number: " + ((Agent)rosterEmployees[i]).getAssignNum() + "\nRank: " +
-                ((Agent)rosterEmployees[i]).getRank();
-            }
-            if (rosterEmployees[i] instanceof ProfessionalStaff){
-                report += "\n\nProfessional Staff Details:\nCubicle Number: " + ((ProfessionalStaff)rosterEmployees[i]).getCubicleNum();
-            }
-            if (rosterEmployees[i] instanceof LabSpecialist){
-                report += "\n\nLab Specialist Details:\nLab Number: " + ((LabSpecialist)rosterEmployees[i]).getLabNum();
-            }
-
-            JOptionPane.showMessageDialog(null, report, "Employee Report", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public static void searchEmployee(Employee[] rosterEmployees){
-        int index = -1;
-        String menu = "** Search Employee **\n\n1. Search by ID\n2. Search by Name\n3. Search by Phone\n4. Search by Email\n5. Exit";
-        switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-            case 1:
-            String id = JOptionPane.showInputDialog("Enter ID:");
-            index = searchEmployeeByID(rosterEmployees, id);
-            printEmployeeReport(rosterEmployees, index);
-            break;
-
-            case 2:
-            String name = JOptionPane.showInputDialog("Enter full name:");
-            index = searchEmployeeByName(rosterEmployees, name);
-            printEmployeeReport(rosterEmployees, index);
-            break;
-
-            case 3:
-            String phone = JOptionPane.showInputDialog("Enter phone number:");
-            index = searchEmployeeByPhone(rosterEmployees, phone);
-            break;
-
-            case 4:
-            String email = JOptionPane.showInputDialog("Enter email:");
-            index = searchEmployeeByEmail(rosterEmployees, email);
-            printEmployeeReport(rosterEmployees, index);
-            break;
-
-            case 5:
-            break;
-
-            default:
-            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 5!", "Error!", JOptionPane.ERROR_MESSAGE);
-
-        }
-    }
-
-    
 
 }
