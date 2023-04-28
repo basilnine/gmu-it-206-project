@@ -1,4 +1,4 @@
-import javax.swing.*;
+
 
 public abstract class Employee {
     private String id;
@@ -18,7 +18,6 @@ public abstract class Employee {
 
     private static int idTrack;
     private final int MAX_INVENTORY_ITEM = 3;
-    //create a inventory array of 3 items
     private InventoryItem[] Inventory = new InventoryItem[MAX_INVENTORY_ITEM];
 
     private static final int MAX_EMPLOYEES = 100;
@@ -255,7 +254,7 @@ public abstract class Employee {
 
     public void setWorkEmail() {
         //first letter of first name, last name, last two numbers of ID and then grab the last digit of number of employees
-        String email = getFirstName().substring(0, 1) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
+        String email = getFirstName().charAt(0) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
         this.workEmail = email.toLowerCase() + "@agency.gov";
 
     }
@@ -300,7 +299,7 @@ public abstract class Employee {
         if (Inventory.length < MAX_INVENTORY_ITEM) {
             Inventory[(Inventory.length + 1)] = new InventoryItem(empID, type);
         } else {
-            new IllegalArgumentException("Inventory is full");
+            throw new IllegalArgumentException("Inventory is full");
         }
     }
 
@@ -308,7 +307,7 @@ public abstract class Employee {
         if (Inventory.length > 0) {
             Inventory[(Inventory.length - 1)] = null;
         } else {
-            new IllegalArgumentException("Inventory is empty");
+            throw new IllegalArgumentException("Inventory is empty");
         }
 
 
