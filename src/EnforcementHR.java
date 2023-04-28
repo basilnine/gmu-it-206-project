@@ -47,10 +47,17 @@ public class EnforcementHR {
             String addressState = JOptionPane.showInputDialog("Enter state initials:");
             String addressZIP = JOptionPane.showInputDialog("Enter ZIP code:");
             String phone = JOptionPane.showInputDialog("Enter phone number format: (xxx) xxx xxx:");
+            String fieldOffice = JOptionPane.showInputDialog("Enter Field Office Location:");
+            String[] options = new String[] {"Agent", "Professional Staff", "Lab Specialist"};
+            int response = JOptionPane.showOptionDialog(null, "Pick Employee Type", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
             String workTitle = JOptionPane.showInputDialog("Enter work title:");
             double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
-            String fieldOffice = JOptionPane.showInputDialog("Enter Field Office Location:");
-            
+
+            if (response == 0){
+                String radioNum = JOptionPane.showInputDialog("Enter Radio Number:");
+                String assignNum = JOptionPane.showInputDialog("Enter Assignment Number:");
+                String rank = JOptionPane.showInputDialog("Enter Rank:");
+            }
 
         }
     }
