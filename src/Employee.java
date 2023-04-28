@@ -253,7 +253,7 @@ public abstract class Employee {
     public void setWorkEmail() {
         //first letter of first name, last name, last two numbers of ID and then grab the last digit of number of employees
         String email = getFirstName().substring(0, 1) + getLastName() + getId().substring(getId().length() - 2) + String.valueOf(getNumEmployees()).substring(String.valueOf(getNumEmployees()).length() - 1);
-        this.workEmail = email.toLowerCase() + "@company.com";
+        this.workEmail = email.toLowerCase() + "@agency.gov";
 
     }
 
@@ -278,15 +278,12 @@ public abstract class Employee {
         String output = "";
         //get id, full name to string(), get work title, field office, work email
         output += "ID: " + getId() + "\n" +
-                "Full Name: " + fullNameToString() + "\n" +
-                "Work Title: " + getWorkTitle() + "\n" +
-                "Field Office: " + getFieldOffice() + "\n" +
-                "Work email: " + getWorkEmail() + "\n";
+                "Full Name: " + fullNameToString() + " | " +
+                "Work Title: " + getWorkTitle() + " | " +
+                "Field Office: " + getFieldOffice() + " | " +
+                "Work email: " + getWorkEmail() + " | ";
         return output;
     }
-
-
-
 
    public String addressToString() {
        return getAddressStreet() + ", " + getAddressCity() + ", " + getAddressState() + " " + getAddressZip();
