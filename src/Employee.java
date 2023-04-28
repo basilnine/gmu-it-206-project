@@ -319,6 +319,4 @@ public abstract class Employee {
     public static void updateNumEmployees() {
         numEmployees--;
     }
-
-
 }
