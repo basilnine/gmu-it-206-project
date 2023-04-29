@@ -34,7 +34,7 @@ public class LabSpecialist extends Employee {
         return super.toString() + "Lab Specialist";
     }
 
-    public void updateLabNum(){
+    public static void updateNumLabSpecialists(){
         //Subtracts one from number of lab specialists and Employees
         numLabSpecialists--;
     }

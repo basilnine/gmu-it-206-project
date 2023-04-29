@@ -64,7 +64,7 @@ public class Agent extends Employee {
         return super.toString() + "Agent";
     }
 
-    public void updateNumAgents(){
+    public static void updateNumAgents(){
         //Subtracts one from number of Agents and Employees
         numAgents--;
     }

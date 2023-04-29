@@ -14,11 +14,12 @@ public abstract class Employee {
     private String workEmail;
     private String fieldOffice;
     private boolean isActive;
-    protected static int numEmployees;
+    private static int numEmployees;
 
     private static int idTrack = 0;
-    private final int MAX_INVENTORY_ITEM = 3;
-    private InventoryItem[] Inventory = new InventoryItem[MAX_INVENTORY_ITEM];
+    private static final int MAX_INVENTORY_ITEM = 3;
+    private InventoryItem[] inventory = new InventoryItem[MAX_INVENTORY_ITEM];
+    private int numInventoryItem;
 
     private static final int MAX_EMPLOYEES = 100;
 
@@ -105,26 +106,41 @@ public abstract class Employee {
         return idTrack;
     }
 
+    public int getNumInventoryItem(){
+        return this.numInventoryItem;
+    }
+
+    public static int getMaxInventoryItems(){
+        return MAX_INVENTORY_ITEM;
+    }
+    public String getInventoryString(int searchIndex){
+        return inventory[searchIndex].toString();
+    }
+    
+    public int getInventoryType(int searchIndex){
+        return inventory[searchIndex].getType();
+    }
+
+    public String getInventoryToString(int searchIndex){
+        return inventory[searchIndex].toString();
+    }
+
     //mutators
 
     public void setID() {
         //generate an ID with a 3 digit
         String id = "LE" + getIdTrack();
+        
         if (id.length() == 3) {
-            id = "LE0000000" + (getIdTrack() + 1);
-        } else if (id.length() == 4) {
-            id = "LE000000" + (getIdTrack() + 1);
-        } else if (id.length() == 5) {
-            id = "LE00000" + (getIdTrack() + 1);
-        } else if (id.length() == 6) {
-            id = "LE0000" + (getIdTrack() + 1);
-        } else if (id.length() == 7) {
             id = "LE000" + (getIdTrack() + 1);
-        } else if (id.length() == 8) {
+        } 
+        else if (id.length() == 4) {
             id = "LE00" + (getIdTrack() + 1);
-        } else if (id.length() == 9) {
+        } 
+        else if (id.length() == 5) {
             id = "LE0" + (getIdTrack() + 1);
-        } else{
+        } 
+        else{
             id = "LE" + (getIdTrack() + 1);
         }
 
@@ -135,13 +151,16 @@ public abstract class Employee {
         //validate that the first letter is capitalized
         if (firstName.charAt(0) != firstName.toUpperCase().charAt(0)) {
             throw new IllegalArgumentException("First name must be capitalized");
-        } //if first name has a space,throw an exception
+        } 
+        //if first name has a space, throw an exception
         else if (firstName.contains(" ")) {
             throw new IllegalArgumentException("First name cannot contain a space");
-        } //if first name has a number, throw an exception
+        } 
+        //if first name has a number, throw an exception
         else if (firstName.matches(".*\\d.*")) {
             throw new IllegalArgumentException("First name cannot contain a number");
-        } //if first name has a special character, throw an exception
+        } 
+        //if first name has a special character, throw an exception
         else if (firstName.matches("[^a-zA-Z0-9 ]")) {
             throw new IllegalArgumentException("First name cannot contain a special character");
         }
@@ -151,15 +170,20 @@ public abstract class Employee {
     public void setLastName(String lastName) {
         if (lastName == null || lastName.isEmpty()) {
             throw new IllegalArgumentException("Last name cannot be empty");
-        } else if (lastName.charAt(0) != lastName.toUpperCase().charAt(0)) {
+        } 
+        else if (lastName.charAt(0) != lastName.toUpperCase().charAt(0)) {
             throw new IllegalArgumentException("Last name must be capitalized");
-        } else if (lastName.contains(" ")) {
+        } 
+        else if (lastName.contains(" ")) {
             throw new IllegalArgumentException("Last name cannot contain a space");
-        } else if (lastName.matches(".*\\d.*")) {
+        } 
+        else if (lastName.matches(".*\\d.*")) {
             throw new IllegalArgumentException("Last name cannot contain a number");
-        } else if (lastName.matches("[^a-zA-Z0-9 ]")) {
+        } 
+        else if (lastName.matches("[^a-zA-Z0-9 ]")) {
             throw new IllegalArgumentException("Last name cannot contain a special character");
-        } else {
+        } 
+        else {
             this.lastName = lastName;
         }
     }
@@ -283,9 +307,9 @@ public abstract class Employee {
         //get id, full name to string(), get work title, field office, work email
         output += "ID: " + getId() + "\n" +
                 "Full Name: " + fullNameToString() + " | " +
-                "Work Title: " + getWorkTitle() + " | " +
+                "Position: " + getWorkTitle() + " | " +
                 "Field Office: " + getFieldOffice() + " | " +
-                "Work email: " + getWorkEmail() + " | ";
+                "Work Email: " + getWorkEmail() + " | ";
         return output;
     }
 
@@ -299,23 +323,50 @@ public abstract class Employee {
 
     public void addInventoryItem(String empID, int type) {
         //if inventory is not full, add item
-        if (Inventory.length < MAX_INVENTORY_ITEM) {
-            Inventory[(Inventory.length + 1)] = new InventoryItem(empID, type);
-        } else {
-            throw new IllegalArgumentException("Inventory is full");
+        if (numInventoryItem < MAX_INVENTORY_ITEM) {
+            inventory[(numInventoryItem)] = new InventoryItem(empID, type);
+            this.numInventoryItem++;
+        } 
+        else {
+            throw new IllegalArgumentException("Inventory is full!");
         }
     }
 
-    public void removeInventoryItem(InventoryItem item) {
-        //if inventory is not empty, remove item
-        if (Inventory.length > 0) {
-            Inventory[(Inventory.length - 1)] = null;
-        } else {
-            throw new IllegalArgumentException("Inventory is empty");
+    public int searchInventoryItem(int itemType){
+        int index = -1;
+        for (int i = 0; i < numInventoryItem; i++){
+            if (itemType == inventory[i].getType()){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    public void removeInventoryItem(int searchIndex) {
+        int inventoryType = getInventoryType(searchIndex);
+        
+        if (inventoryType == 0){
+            InventoryItem.updateNumLaptops();
+        }
+        if (inventoryType == 1){
+            InventoryItem.updateNumPhones();
+        }
+        if (inventoryType == 2){
+            InventoryItem.updateNumPatrolCars();
         }
 
-
+        if (numInventoryItem > 0) {
+            for (int i = searchIndex; i < numInventoryItem; i++){
+                inventory[i] = inventory[i+1];
+            }
+            this.numInventoryItem--;
+        } 
+        else {
+            throw new IllegalArgumentException("Inventory is empty!");
+        }
     }
+
+
     public static void updateNumEmployees() {
         numEmployees--;
     }

@@ -1,19 +1,29 @@
 public class InventoryItem {
-    public String empID;
-    public int type;
-    public static int numLaptops;
-    public static int numPhones;
-    public static int numPatrolCars;
+    private String empID;
+    private int type;
+
+    private final static int MAX_LAPTOPS = 50;
+    private final static int MAX_PHONES = 50;
+    
+    private final static int MAX_PATROLCARS = 50;
+
+    private static int numLaptops = MAX_LAPTOPS;
+    private static int numPhones = MAX_PHONES;
+    private static int numPatrolCars = MAX_PATROLCARS;
 
     public InventoryItem(String empID, int type){
+        
         setEmpID(empID);
         setType(type);
-        if(type == 1){
-            numLaptops++;
-        } else if(type == 2){
-            numPhones++;
-        } else if(type == 3){
-            numPatrolCars++;
+       
+        if (type == 0){
+            numLaptops--;
+        } 
+        if (type == 1){
+            numPhones--;
+        } 
+        if( type == 2){
+            numPatrolCars--;
         }
     }
 
@@ -37,44 +47,87 @@ public class InventoryItem {
     public static int getNumPatrolCars(){
         return numPatrolCars;
     }
+    
+    public static int getMaxLaptops(){
+        return MAX_LAPTOPS;
+    }
+
+    public static int getMaxPhones(){
+        return MAX_PHONES;
+    }
+
+    public static int getMaxPatrolCars(){
+        return MAX_PATROLCARS;
+    }
 
     //mutators
     public void setEmpID(String empID){
-        //make sure the length is 5 digits
-        if(empID.length() != 5) {
-            throw new IllegalArgumentException("Employee ID must be 5 digits long!");
-        } else if(!empID.matches("[0-9]+")) {
-            throw new IllegalArgumentException("Employee ID must be numeric!");
-        }
         this.empID = empID;
     }
 
     public void setType(int type){
-        //make sure the type is 1, 2, or 3
-        if(type < 1 || type > 3){
-            throw new IllegalArgumentException("Type must be 1, 2, or 3!");
+        
+        //Checks if any of the items have hit the maximum amount of items assigned
+        if (type == 0){
+            if (numLaptops <= 0){
+                throw new IllegalArgumentException("Maximum amount of laptops have been assigned!");
+            }
         }
+        if (type == 1){
+            if (numPhones <= 0){
+                throw new IllegalArgumentException("Maximum amount of phones have been assigned!");
+            }
+        }
+        if (type == 2){
+            if (numPatrolCars <= 0){
+                throw new IllegalArgumentException("Maximum amount of patrol cars have been assigned!");
+            }
+        }
+
         this.type = type;
     }
 
     //special methods
     public String toString(){
-        return "Inventory Item";
+        String type = "";
+
+        if (getType() == 0){
+            type = "Laptop";
+        }
+        if (getType() == 1){
+            type = "Phone";
+        }
+        if (getType() == 2){
+            type = "Patrol Car";
+        }
+        return type;
     }
 
-    public void updateNumLaptops(){
-        //Subtracts one from number of laptops
-        numLaptops--;
+    public static void updateNumLaptops(){
+        //Adds one from number of laptops
+        numLaptops++;
     }
 
-    public void updateNumPhones(){
-        //Subtracts one from number of phones
-        numPhones--;
+    public static void updateNumPhones(){
+        //Adds one from number of phones
+        numPhones++;
     }
 
-    public void updateNumPatrolCars(){
-        //Subtracts one from number of patrol cars
-        numPatrolCars--;
+    public static void updateNumPatrolCars(){
+        //Adds one from number of patrol cars
+        numPatrolCars++;
+    }
+
+    public static int numLaptopsUsed(){
+        return MAX_LAPTOPS - numLaptops;
+    }
+
+    public static int numPhonesUsed(){
+        return MAX_PHONES - numPhones;
+    }
+
+    public static int numPatrolCarsUsed(){
+        return MAX_PATROLCARS - numPatrolCars;
     }
 
     

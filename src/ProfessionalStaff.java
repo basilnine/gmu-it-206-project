@@ -36,8 +36,8 @@ public class ProfessionalStaff extends Employee {
         return super.toString() + "Professional Staff";
     }
 
-    public void updateCubicleNum(){
-        //Subtracts one from number of professional staff and Employees
+    public static void updateNumProfStaff(){
+        //Subtracts one from number of proffessional staff
         numProfStaff--;
     }
     
