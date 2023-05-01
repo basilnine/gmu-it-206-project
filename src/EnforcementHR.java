@@ -1,47 +1,59 @@
-import javax.swing.JOptionPane;
+import javax.swing.*;
 public class EnforcementHR {
     public static void main(String[] args){
         Employee[] employeeRoster = new Employee[Employee.getMaxEmployees()];
+        employeeRoster[0] = new ProfessionalStaff("Basil", "Ali", "addressStreet", "AddressCity", "VA", "22204", "703-999-9999", "workTitle", 10, "fieldOffice", "00211");
         String menu = "HR Law Enforcement System\n\n1. Add New Employee\n2. Update Employee\n3. Remove Employee\n4. Search Employee\n5. Manage Employee Inventory\n6. Generate Reports\n7. Quit";
+        String choiceString = JOptionPane.showInputDialog(null, menu, "HR System", JOptionPane.INFORMATION_MESSAGE);
         int choice = 0;
-        do{
-            try{
-                switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                    case 1:
-                    addEmployee(employeeRoster);
-                    break;
+        if (choiceString != null){
+            do{
+                try{
+                    switch(choice = Integer.parseInt(choiceString)){
+
+                        case 1:
+                        addEmployee(employeeRoster);
+                        break;
+                        
+                        case 2:
+                        updateEmployee(employeeRoster);
+                        break;
+                        
+                        case 3:
+                        removeEmployee(employeeRoster);
+                        break;
+                        
+                        case 4:
+                        searchEmployee(employeeRoster);
+                        break;
+                        
+                        case 5:
+                        manageInventory(employeeRoster);
+                        break;
+                        
+                        case 6:
+                        generateReports(employeeRoster);
+                        break;
+                        
+                        case 7:
+                        break;
+                        
+                        default:
+                        JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
                     
-                    case 2:
-                    updateEmployee(employeeRoster);
-                    break;
-                    
-                    case 3:
-                    removeEmployee(employeeRoster);
-                    break;
-                    
-                    case 4:
-                    searchEmployee(employeeRoster);
-                    break;
-                    
-                    case 5:
-                    manageInventory(employeeRoster);
-                    break;
-                    
-                    case 6:
-                    generateReports(employeeRoster);
-                    break;
-                    
-                    case 7:
-                    break;
-                    
-                    default:
-                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    break;
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            }
-        }while(choice != 7);
+                if (choice != 7){
+                    choiceString = JOptionPane.showInputDialog(null, menu, "HR System", JOptionPane.INFORMATION_MESSAGE);
+                    if (choiceString == null){
+                        choice = 7;
+                    }
+                }
+            }while(choice != 7);
+        }
         JOptionPane.showMessageDialog(null, "Powering off..");
         System.exit(0);
     }
@@ -49,35 +61,151 @@ public class EnforcementHR {
     public static void addEmployee(Employee[] employeeRoster){
 
         if (Employee.getNumEmployees() <= Employee.getMaxEmployees()){
-            String firstName = JOptionPane.showInputDialog("Enter First Name:");
-            String lastName = JOptionPane.showInputDialog("Enter Last Name:");
-            String addressStreet = JOptionPane.showInputDialog("Enter Street Number and Name:");
-            String addressCity = JOptionPane.showInputDialog("Enter City Name:");
-            String addressState = JOptionPane.showInputDialog("Enter State Initials:");
-            String addressZIP = JOptionPane.showInputDialog("Enter ZIP code:");
-            String phone = JOptionPane.showInputDialog("Enter Phone Number [Format: (xxx-xxx-xxxx)]:");
-            String fieldOffice = JOptionPane.showInputDialog("Enter Field Office Location:");
-            String[] options = new String[] {"Agent", "Professional Staff", "Lab Specialist"};
-            int response = JOptionPane.showOptionDialog(null, "Pick Employee Type", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
-            String workTitle = JOptionPane.showInputDialog("Enter Position Title:");
-            double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter Salary:"));
 
-            if (response == 0){
-                String radioNum = JOptionPane.showInputDialog("Enter Radio Number:");
-                String assignNum = JOptionPane.showInputDialog("Enter Assignment Number:");
-                String rank = JOptionPane.showInputDialog("Enter Rank:");
-                employeeRoster[Employee.getNumEmployees()] = new Agent(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, radioNum, assignNum, rank);
-            }
-            else if (response == 1){
-                String cubicleNum = JOptionPane.showInputDialog("Enter Cubicle Number:");
-                employeeRoster[Employee.getNumEmployees()] = new ProfessionalStaff(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, cubicleNum);
-            }
-            else if (response == 2){
-                String labNum = JOptionPane.showInputDialog("Enter Lab Number:");
-                employeeRoster[Employee.getNumEmployees()] = new LabSpecialist(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, labNum);
+            //Creation of three new panels
+            JPanel namePanel = new JPanel();
+            JPanel addressPanel = new JPanel();
+            JPanel workPanel = new JPanel();
+            
+            //Sets panel layout so that fields are vertical
+            namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+            addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.Y_AXIS));
+            workPanel.setLayout(new BoxLayout(workPanel, BoxLayout.Y_AXIS));
+            
+            //Name Panel Fields
+            JTextField firstNameField = new JTextField(6); //Creates new field (length) | First name
+            namePanel.add(new JLabel("First Name:")); //Creates label for field
+            namePanel.add(firstNameField); //Adds field to
+            JTextField lastNameField = new JTextField(6); //Last Name
+            namePanel.add(new JLabel("Last Name:"));
+            namePanel.add(lastNameField);
+            JTextField phoneField = new JTextField(4); //Phone
+            namePanel.add(new JLabel("Phone Number:"));
+            namePanel.add(phoneField);
+
+            //Address Panel Fields
+            JTextField addressStreetField = new JTextField(8); //Street Address
+            addressPanel.add(new JLabel("Street Address:"));
+            addressPanel.add(addressStreetField);
+            JTextField addressCityField = new JTextField(8); //City Address
+            addressPanel.add(new JLabel("City:"));
+            addressPanel.add(addressCityField);
+            JTextField addressStateField = new JTextField(2); //State Initials
+            addressPanel.add(new JLabel("State Initals:"));
+            addressPanel.add(addressStateField);
+            JTextField addressZIPField = new JTextField(4); //ZIP Address
+            addressPanel.add(new JLabel("ZIP Code:"));
+            addressPanel.add(addressZIPField);
+
+            //Work Panel Fields
+            JTextField fieldOfficeField = new JTextField(6); //Field Office
+            workPanel.add(new JLabel("Field Office:"));
+            workPanel.add(fieldOfficeField);
+            JTextField workTitleField = new JTextField(6); //Position Title
+            workPanel.add(new JLabel("Position Title:"));
+            workPanel.add(workTitleField);
+            JTextField salaryField = new JTextField(6); //Salary
+            workPanel.add(new JLabel("Salary:"));
+            workPanel.add(salaryField);
+            
+            //Displays Name Panel
+            int resultNamePanel = JOptionPane.showConfirmDialog(null, namePanel, "Add Employee", JOptionPane.OK_CANCEL_OPTION);
+            //If User presses OK button, display Address Panel
+            String firstName = firstNameField.getText(); //Stores value into variable
+            String lastName = lastNameField.getText();
+            String phone = phoneField.getText();
+
+            if (resultNamePanel == JOptionPane.OK_OPTION){
+                //Display Address Panel
+                int resultAddressPanel = JOptionPane.showConfirmDialog(null, addressPanel, "Add Employee", JOptionPane.OK_CANCEL_OPTION);
+                String addressStreet = addressStreetField.getText();
+                String addressCity = addressCityField.getText();
+                String addressState = addressStateField.getText();
+                String addressZIP = addressZIPField.getText();
+
+                //If user presses OK button, display Work Type Dialog
+                if (resultAddressPanel == JOptionPane.OK_OPTION){
+                    String[] options = new String[] {"Agent", "Professional Staff", "Lab Specialist"};
+                    int response = JOptionPane.showOptionDialog(null, "Pick Employee Type", "Add Employee", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+                    //If user picks Agent, create new fields, display Work Panel
+                    if (response == 0){
+                        JTextField radioNumField = new JTextField(4);
+                        workPanel.add(new JLabel("Radio Number:"));
+                        workPanel.add(radioNumField);
+                        JTextField assignNumField = new JTextField(4);
+                        workPanel.add(new JLabel("Assignment Number:"));
+                        workPanel.add(assignNumField);
+                        JTextField rankField = new JTextField(5);
+                        workPanel.add(new JLabel("Rank:"));
+                        workPanel.add(rankField);
+                        int resultWorkPanel = JOptionPane.showConfirmDialog(null, workPanel, "Add Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        String fieldOffice = fieldOfficeField.getText();
+                        String workTitle = workTitleField.getText();
+                        double salary = Double.parseDouble(salaryField.getText());
+                        String radioNum = radioNumField.getText();
+                        String assignNum = assignNumField.getText();
+                        String rank = rankField.getText();
+
+                        if (resultWorkPanel == JOptionPane.OK_OPTION){
+                            employeeRoster[Employee.getNumEmployees()] = new Agent(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, radioNum, assignNum, rank);
+                            JOptionPane.showMessageDialog(null, "Employee has been added!", "Add Employee", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    //If user picks Professional Stafff, create new fields, display Work Panel
+                    else if (response == 1){
+                        JTextField cubicleNumField = new JTextField(4);
+                        workPanel.add(new JLabel("Cubical Number:"));
+                        workPanel.add(cubicleNumField);
+                        int resultWorkPanel = JOptionPane.showConfirmDialog(null, workPanel, "Add Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        String fieldOffice = fieldOfficeField.getText();
+                        String workTitle = workTitleField.getText();
+                        double salary = Double.parseDouble(salaryField.getText());
+                        String cubicleNum = cubicleNumField.getText();
+
+                        if (resultWorkPanel == JOptionPane.OK_OPTION){
+                            employeeRoster[Employee.getNumEmployees()] = new ProfessionalStaff(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, cubicleNum);
+                            JOptionPane.showMessageDialog(null, "Employee has been added!", "Add Employee", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    //If user picks Lab Specialist, create new fields, display Work Panel
+                    else if (response == 2){
+                        JTextField labNumField = new JTextField(4);
+                        workPanel.add(new JLabel("Lab Number:"));
+                        workPanel.add(labNumField);
+                        int resultWorkPanel = JOptionPane.showConfirmDialog(null, workPanel, "Add Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        String fieldOffice = fieldOfficeField.getText();
+                        String workTitle = workTitleField.getText();
+                        double salary = Double.parseDouble(salaryField.getText());
+                        String labNum = labNumField.getText();
+
+                        if (resultWorkPanel == JOptionPane.OK_OPTION){
+                            employeeRoster[Employee.getNumEmployees()] = new LabSpecialist(firstName, lastName, addressStreet, addressCity, addressState, addressZIP, phone, workTitle, salary, fieldOffice, labNum);
+                            JOptionPane.showMessageDialog(null, "Employee has been added!", "Add Employee", JOptionPane.INFORMATION_MESSAGE);
+                        }
+            //All else statements lead to cancel message
+                        else{
+                            JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                }
             }
             else{
-                JOptionPane.showMessageDialog(null, "Must choose a valid employee type!", "Error!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Add Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
             }
         }
         else{
@@ -128,62 +256,76 @@ public class EnforcementHR {
     public static void updateEmployee(Employee[] employeeRoster){
         if (Employee.getNumEmployees() > 0){
             String id = JOptionPane.showInputDialog("Enter Employee ID:");
-            int search = searchEmployeeByID(employeeRoster, id);
-            if (search == -1){
-                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
+            if (id == null){
+                JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
             }
             else{
-                String menu = "** Update Employee Data **\nID: " + employeeRoster[search].getId() + "\n\n";
-                menu += "1. Update Name\n2. Update Address\n3. Update Salary\n4. Update Position\n5. Update Phone Number";
-                if (employeeRoster[search] instanceof Agent){
-                    menu += "\n6. Update Agent Data";
+                int search = searchEmployeeByID(employeeRoster, id);
+                if (search == -1){
+                    JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                if (employeeRoster[search] instanceof ProfessionalStaff){
-                    menu += "\n6. Update Professional Staff Data";
-                }
-                if (employeeRoster[search] instanceof LabSpecialist){
-                    menu += "\n6. Update Lab Specialist Data";
-                }
-                menu += "\n7. Exit";
-                int choice = 0;
-                do{
-                    try{
-                        switch(choice = Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                            case 1:
-                            updateName(employeeRoster, search);
-                            break;
-
-                            case 2:
-                            updateAddress(employeeRoster, search);
-                            break;
-
-                            case 3:
-                            updateSalary(employeeRoster, search);
-                            break;
-
-                            case 4:
-                            updatePosition(employeeRoster, search);
-                            break;
-
-                            case 5:
-                            updatePhone(employeeRoster, search);
-                            break;
-
-                            case 6:
-                            updateEmployeeTypeData(employeeRoster, search);
-                            break;
-
-                            case 7:
-                            break;
-
-                            default:
-                            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        }
-                    }catch(Exception e){
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                else{
+                    String menu = "** Update Employee Data **\nID: " + employeeRoster[search].getId() + " [" + employeeRoster[search].fullNameToString() + "]\n";
+                    menu += "1. Update Name\n2. Update Address\n3. Update Salary\n4. Update Position\n5. Update Phone Number";
+                    if (employeeRoster[search] instanceof Agent){
+                        menu += "\n6. Update Agent Data";
                     }
-                }while(choice != 7);
+                    if (employeeRoster[search] instanceof ProfessionalStaff){
+                        menu += "\n6. Update Professional Staff Data";
+                    }
+                    if (employeeRoster[search] instanceof LabSpecialist){
+                        menu += "\n6. Update Lab Specialist Data";
+                    }
+                    menu += "\n7. Exit";
+                    String choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
+                    int choice = 0;
+                    if (choiceString != null){
+                        do{
+                            try{
+                                switch(choice = Integer.parseInt(choiceString)){
+                                    case 1:
+                                    updateName(employeeRoster, search);
+                                    break;
+
+                                    case 2:
+                                    updateAddress(employeeRoster, search);
+                                    break;
+
+                                    case 3:
+                                    updateSalary(employeeRoster, search);
+                                    break;
+
+                                    case 4:
+                                    updatePosition(employeeRoster, search);
+                                    break;
+
+                                    case 5:
+                                    updatePhone(employeeRoster, search);
+                                    break;
+
+                                    case 6:
+                                    updateEmployeeTypeData(employeeRoster, search);
+                                    break;
+
+                                    case 7:
+                                    break;
+
+                                    default:
+                                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 7!", "Error!", JOptionPane.ERROR_MESSAGE);
+                                    break;
+                                }
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                            }
+                            if (choice != 7){
+                                choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
+                                if (choiceString == null){
+                                    choice = 7;
+                                }
+                            }
+                        }while(choice != 7);
+                    }
+                }
             }
         }
         else{
@@ -192,118 +334,310 @@ public class EnforcementHR {
     }
 
     public static void updateName(Employee[] employeeRoster, int search){
-        String firstName = JOptionPane.showInputDialog("Enter first name:");
-        String lastName = JOptionPane.showInputDialog("Enter last name:");
-        employeeRoster[search].setFirstName(firstName);
-        employeeRoster[search].setLastName(lastName);
-        JOptionPane.showMessageDialog(null, "Name has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        JPanel namePanel = new JPanel(); //Create new Panel
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS)); //Sets layout for panel
+
+        JTextField firstNameField = new JTextField(8); //Creates First Name Field
+        namePanel.add(new JLabel("First Name:")); //Adds label for First Name Field
+        namePanel.add(firstNameField); //Adds First Name Field to Panel 
+        JTextField lastNameField = new JTextField(8); //Last Name Field
+        namePanel.add(new JLabel("Last Name:")); 
+        namePanel.add(lastNameField);
+
+        int resultNamePanel = JOptionPane.showConfirmDialog(null, namePanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+        
+        if (resultNamePanel == JOptionPane.OK_OPTION){
+            employeeRoster[search].setFirstName(firstNameField.getText());
+            employeeRoster[search].setLastName(lastNameField.getText());
+            JOptionPane.showMessageDialog(null, "Name has been updated!", "Employee Updated!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public static void updateAddress(Employee[] employeeRoster, int search){
-        String addressStreet = JOptionPane.showInputDialog("Enter street address:");
-        String addressCity = JOptionPane.showInputDialog("Enter city:");
-        String addressState = JOptionPane.showInputDialog("Enter state:");
-        String addressZIP = JOptionPane.showInputDialog("Enter zip code:");
-        employeeRoster[search].setAddressStreet(addressStreet);
-        employeeRoster[search].setAddressCity(addressCity);
-        employeeRoster[search].setAddressState(addressState);
-        employeeRoster[search].setAddressZip(addressZIP);
-        JOptionPane.showMessageDialog(null, "Address has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+
+        JPanel addressPanel = new JPanel(); //Creates Address Panel
+        addressPanel.setLayout(new BoxLayout(addressPanel, BoxLayout.Y_AXIS)); //Sets layout for panel
+
+        JTextField addressStreetField = new JTextField(10); //Street Address Field
+        addressPanel.add(new JLabel("Street Address:"));
+        addressPanel.add(addressStreetField);
+        JTextField addressCityField = new JTextField(10); //City Field
+        addressPanel.add(new JLabel("City:"));
+        addressPanel.add(addressCityField);
+        JTextField addressStateField = new JTextField(10); //State Field
+        addressPanel.add(new JLabel("State Initials:"));
+        addressPanel.add(addressStateField);
+        JTextField addressZIPField = new JTextField(10); //ZIP Code Field
+        addressPanel.add(new JLabel("ZIP Code:"));
+        addressPanel.add(addressZIPField);
+
+        //Display Address Panel
+        int resultAddressPanel = JOptionPane.showConfirmDialog(null, addressPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+
+        //Updates Data if user presses OK
+        if (resultAddressPanel == JOptionPane.OK_OPTION){
+            employeeRoster[search].setAddressStreet(addressStreetField.getText());
+            employeeRoster[search].setAddressCity(addressCityField.getText());
+            employeeRoster[search].setAddressState(addressStateField.getText());
+            employeeRoster[search].setAddressZip(addressZIPField.getText());
+            //Sends confirm message when successful
+            JOptionPane.showMessageDialog(null, "Address has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        //Sends confirm message when cancelled
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public static void updateSalary(Employee[] employeeRoster, int search){
-        double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
-        employeeRoster[search].setSalary(salary);
-        JOptionPane.showMessageDialog(null, "Salary has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        JPanel salaryPanel = new JPanel(); //Salary Panel
+
+        JTextField salaryField = new JTextField(6); //Salary Field
+        salaryPanel.add(new JLabel("Enter new salary:"));
+        salaryPanel.add(salaryField);
+
+        int resultSalaryPanel = JOptionPane.showConfirmDialog(null, salaryPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+
+        if (resultSalaryPanel == JOptionPane.OK_OPTION){
+            employeeRoster[search].setSalary(Double.parseDouble(salaryField.getText()));
+            JOptionPane.showMessageDialog(null, "Salary has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public static void updatePosition(Employee[] employeeRoster, int search){
-        String position = JOptionPane.showInputDialog("Enter positon:");
-        int choice = JOptionPane.showConfirmDialog(null, "Does this new position come with a salary update?", "", JOptionPane.YES_NO_OPTION);
-        employeeRoster[search].setWorkTitle(position);
-        if (choice == JOptionPane.YES_OPTION){
-            double salary = Double.parseDouble(JOptionPane.showInputDialog("Enter salary:"));
-            employeeRoster[search].setSalary(salary);
-            JOptionPane.showMessageDialog(null, "Position and Salary has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
-        } 
-        else {
-            JOptionPane.showMessageDialog(null, "Position has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        JPanel positionPanel = new JPanel(); //Position Panel
+
+        JTextField positionField = new JTextField(6); //Position Field
+        positionPanel.add(new JLabel("Position:"));
+        positionPanel.add(positionField);
+
+        //Asks user if employee position update comes with a salary change?
+        int salaryConfirm = JOptionPane.showConfirmDialog(null, "Does this position come with a salary change?", "Update Employee", JOptionPane.YES_NO_CANCEL_OPTION);
+
+        //If yes, include salary field in Position Panel and ask user for phone position and salary
+        if (salaryConfirm == JOptionPane.YES_OPTION){
+            positionPanel.setLayout(new BoxLayout(positionPanel, BoxLayout.Y_AXIS)); //Sets layout for panel
+            JTextField salaryField = new JTextField(6); //Salary Field
+            positionPanel.add(new JLabel("Salary:"));
+            positionPanel.add(salaryField);
+            int resultPositionPanel = JOptionPane.showConfirmDialog(null, positionPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+            
+            //Once pressed okay, sends data from position and salary fields into employee object
+            if (resultPositionPanel == JOptionPane.OK_OPTION){
+                employeeRoster[search].setWorkTitle(positionField.getText());
+                employeeRoster[search].setSalary(Double.parseDouble(salaryField.getText()));
+                JOptionPane.showMessageDialog(null, "Position and Salary has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            //Cancel message if pressed cancel
+            else{
+                JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        //If says no, then asks for employee position
+        else if (salaryConfirm == JOptionPane.NO_OPTION){
+            int resultPositionPanel = JOptionPane.showConfirmDialog(null, positionPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+
+            //Once pressed okay, sends data from position field into employee object
+            if (resultPositionPanel == JOptionPane.OK_OPTION){
+                employeeRoster[search].setWorkTitle(positionField.getText());
+                JOptionPane.showMessageDialog(null, "Position has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            //Cancel message if pressed cancel
+            else{
+                JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        //Cancel message if pressed cancel
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
         }
     }
 
     public static void updatePhone(Employee[] employeeRoster, int search){
-        String phone = JOptionPane.showInputDialog("Enter phone number:");
-        employeeRoster[search].setPhoneNumber(phone);
-        JOptionPane.showMessageDialog(null, "Phone number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
+        JPanel phonePanel = new JPanel(); //Phone Panel
+
+        JTextField phoneField = new JTextField(6); //Phone Field
+        phonePanel.add(new JLabel("Phone Number:"));
+        phonePanel.add(phoneField);
+
+        int resultPhonePanel = JOptionPane.showConfirmDialog(null, phonePanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+        
+        //Once pressed okay, sends data from phone field into employee object
+        if (resultPhonePanel == JOptionPane.OK_OPTION){
+            employeeRoster[search].setPhoneNumber(phoneField.getText());
+            JOptionPane.showMessageDialog(null, "Phone number has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public static void updateEmployeeTypeData(Employee[] employeeRoster, int search){
+        //Agent Employee Type Update Options
         if (employeeRoster[search] instanceof Agent){
-            String menu = "Update Agent Data:\n\n1. Update Radio Number\n2. Update Assignment Number\n3. Update Rank";
-            switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                case 1:
-                String radioNum = JOptionPane.showInputDialog("Enter Radio Number:");
-                ((Agent)employeeRoster[search]).setRadioNum(radioNum);
-                JOptionPane.showMessageDialog(null, "Radio number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
-                break;
+            String menu = "Update Agent Data:\n\n1. Update Radio Number\n2. Update Assignment Number\n3. Update Rank\n4. Exit";
+            String choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
+            int choice = 0;
+            if (choiceString != null){
+                do{
+                    switch(choice = Integer.parseInt(choiceString)){
+                        case 1: //Update radio number
+                        JPanel radioPanel = new JPanel(); //Radio Number Panel
+                
+                        JTextField radioField = new JTextField(6); //Radio Number Field
+                        radioPanel.add(new JLabel("Radio Number:"));
+                        radioPanel.add(radioField);
+                
+                        int resultRadioPanel = JOptionPane.showConfirmDialog(null, radioPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        //Once pressed okay, sends data from radio number field into employee object
+                        if (resultRadioPanel == JOptionPane.OK_OPTION){
+                            ((Agent)employeeRoster[search]).setRadioNum(radioField.getText());
+                            JOptionPane.showMessageDialog(null, "Radio number has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                        break;
 
-                case 2:
-                String assignNum = JOptionPane.showInputDialog("Enter Assignment Number:");
-                ((Agent)employeeRoster[search]).setAssignNum(assignNum);
-                JOptionPane.showMessageDialog(null, "Assignment number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
-                break;
+                        case 2:
+                        JPanel assignPanel = new JPanel(); //Assignment Number Panel
+                
+                        JTextField assignField = new JTextField(6); //Assignment Number Field
+                        assignPanel.add(new JLabel("Assignment Number:"));
+                        assignPanel.add(assignField);
+                
+                        int resultAssignPanel = JOptionPane.showConfirmDialog(null, assignPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        //Once pressed okay, sends data from assignment field into employee object
+                        if (resultAssignPanel == JOptionPane.OK_OPTION){
+                            ((Agent)employeeRoster[search]).setAssignNum(assignField.getText());
+                            JOptionPane.showMessageDialog(null, "Assignment number has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                        break;
 
-                case 3:
-                String rank = JOptionPane.showInputDialog("Enter Rank:");
-                ((Agent)employeeRoster[search]).setRank(rank);
-                JOptionPane.showMessageDialog(null, "Rank has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
-                break;
+                        case 3:
+                        JPanel rankPanel = new JPanel(); //Rank Panel
+                
+                        JTextField rankField = new JTextField(6); //Rank Field
+                        rankPanel.add(new JLabel("Rank:"));
+                        rankPanel.add(rankField);
+                
+                        int resultRankPanel = JOptionPane.showConfirmDialog(null, rankPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);
+                        
+                        //Once pressed okay, sends data from rank field into employee object
+                        if (resultRankPanel == JOptionPane.OK_OPTION){
+                            ((Agent)employeeRoster[search]).setRank(rankField.getText());
+                            JOptionPane.showMessageDialog(null, "Rank has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+                        }
+                        break;
 
-                default:
-                JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 3!", "Error!", JOptionPane.ERROR_MESSAGE);
-                break;
+                        case 4:
+                        break;
+
+                        default:
+                        JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 4!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                    if (choice != 4){
+                        choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
+                        if (choiceString == null){
+                            choice = 4;
+                        }
+                    }
+                }while(choice != 4);
             }
         }
-        if (employeeRoster[search] instanceof LabSpecialist){
-            String labNum = JOptionPane.showInputDialog("Enter Lab Number:");
-            ((LabSpecialist)employeeRoster[search]).setLabNum(labNum);
-            JOptionPane.showMessageDialog(null, "Lab number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
-        }
-        if (employeeRoster[search] instanceof ProfessionalStaff){
-            String cubicleNum = JOptionPane.showInputDialog("Enter Cubicle Number:");
-            ((ProfessionalStaff)employeeRoster[search]).setCubicleNum(cubicleNum);
-            JOptionPane.showMessageDialog(null, "Cubicle number has been updated!", "Updated Data!", JOptionPane.WARNING_MESSAGE);
 
+        if (employeeRoster[search] instanceof LabSpecialist){
+            JPanel labPanel = new JPanel(); //Lab number Panel
+        
+            JTextField labField = new JTextField(6); //Lab number Field
+            labPanel.add(new JLabel("Lab Number:"));
+            labPanel.add(labField);
+        
+            int resultLabPanel = JOptionPane.showConfirmDialog(null, labPanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);                
+            //Once pressed okay, sends data from lab number field into employee object
+            if (resultLabPanel == JOptionPane.OK_OPTION){
+                ((LabSpecialist)employeeRoster[search]).setLabNum(labField.getText());
+                JOptionPane.showMessageDialog(null, "Lab number has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+
+        if (employeeRoster[search] instanceof ProfessionalStaff){
+            JPanel cubiclePanel = new JPanel(); //Cubicle number Panel
+        
+            JTextField cubicleField = new JTextField(6); //Cubicle number Field
+            cubiclePanel.add(new JLabel("Cubicle Number:"));
+            cubiclePanel.add(cubicleField);
+        
+            int resultCubiclePanel = JOptionPane.showConfirmDialog(null, cubiclePanel, "Update Employee", JOptionPane.OK_CANCEL_OPTION);                
+            //Once pressed okay, sends data from cubicle field into employee object
+            if (resultCubiclePanel == JOptionPane.OK_OPTION){
+                ((ProfessionalStaff)employeeRoster[search]).setCubicleNum(cubicleField.getText());
+                JOptionPane.showMessageDialog(null, "Cubicle number has been updated!", "Updated Employee!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 
     public static void removeEmployee(Employee[] employeeRoster){
         if (Employee.getNumEmployees() > 0){
-            String id = JOptionPane.showInputDialog("Enter Employee ID you would like to remove:");
-            int search = searchEmployeeByID(employeeRoster, id);
-            if (search == -1){
-                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                if (employeeRoster[search] instanceof Agent){
-                    Agent.updateNumAgents();
+            String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Remove Employee", JOptionPane.INFORMATION_MESSAGE);
+            if (id != null){
+                int search = searchEmployeeByID(employeeRoster, id);
+                if (search == -1){
+                    JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-                if (employeeRoster[search] instanceof ProfessionalStaff){
-                    ProfessionalStaff.updateNumProfStaff();
-                }
-                if (employeeRoster[search] instanceof LabSpecialist){
-                    LabSpecialist.updateNumLabSpecialists();
-                }
-                if (employeeRoster[search].getNumInventoryItem() > 0){
-                    for (int i = employeeRoster[search].getNumInventoryItem(); i > 0; i--){
-                        employeeRoster[search].removeInventoryItem(i-1);
+                else{
+                    String idDelete = employeeRoster[search].getId();
+                    int deleteConfirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?\nID: " + idDelete + " [" + employeeRoster[search].fullNameToString(), "] Remove Employee", JOptionPane.YES_NO_OPTION);
+
+                    if (deleteConfirm == JOptionPane.YES_OPTION){
+                        if (employeeRoster[search] instanceof Agent){
+                            Agent.updateNumAgents();
+                        }
+                        if (employeeRoster[search] instanceof ProfessionalStaff){
+                            ProfessionalStaff.updateNumProfStaff();
+                        }
+                        if (employeeRoster[search] instanceof LabSpecialist){
+                            LabSpecialist.updateNumLabSpecialists();
+                        }
+                        if (employeeRoster[search].getNumInventoryItem() > 0){
+                            for (int i = employeeRoster[search].getNumInventoryItem(); i > 0; i--){
+                                employeeRoster[search].removeInventoryItem(i-1);
+                            }
+                        }
+                        for (int i = search; i < Employee.getNumEmployees(); i++){
+                            employeeRoster[i] = employeeRoster[i+1];
+                        }
+                        Employee.updateNumEmployees();
+                        JOptionPane.showMessageDialog(null, "Employee ID: " + idDelete + " has been deleted!", "Deleted!", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Remove Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
                     }
                 }
-                for (int i = search; i < Employee.getNumEmployees(); i++){
-                    employeeRoster[i] = employeeRoster[i+1];
-                }
-                Employee.updateNumEmployees();
-                JOptionPane.showMessageDialog(null, "Employee ID: " + id + " has been deleted!", "Deleted!", JOptionPane.WARNING_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Remove Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
             }
         }
         else{
@@ -350,42 +684,61 @@ public class EnforcementHR {
         if (Employee.getNumEmployees() > 0){
             int index = -1;
             String menu = "** Search Employee **\n\n1. Search by ID\n2. Search by Name\n3. Search by Phone\n4. Search by Email\n5. Exit";
-            try{
-                switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                    case 1:
-                    String id = JOptionPane.showInputDialog("Enter ID:");
-                    index = searchEmployeeByID(employeeRoster, id);
-                    printEmployeeReport(employeeRoster, index);
-                    break;
+            String choiceString = JOptionPane.showInputDialog(null, menu, "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+            int choice = 0;
+            if (choiceString != null){
+                do{
+                    try{
+                        switch(choice = Integer.parseInt(choiceString)){
+                            case 1:
+                            String id = JOptionPane.showInputDialog(null, "Enter ID:", "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+                            if (id != null){
+                                index = searchEmployeeByID(employeeRoster, id);
+                                printEmployeeReport(employeeRoster, index);
+                            }
+                            break;
 
-                    case 2:
-                    String name = JOptionPane.showInputDialog("Enter Full Name:");
-                    index = searchEmployeeByName(employeeRoster, name);
-                    printEmployeeReport(employeeRoster, index);
-                    break;
+                            case 2:
+                            String name = JOptionPane.showInputDialog(null, "Enter Full Name:", "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+                            if (name != null){
+                                index = searchEmployeeByName(employeeRoster, name);
+                                printEmployeeReport(employeeRoster, index);
+                            }
+                            break;
 
-                    case 3:
-                    String phone = JOptionPane.showInputDialog("Enter Phone Number:");
-                    index = searchEmployeeByPhone(employeeRoster, phone);
-                    printEmployeeReport(employeeRoster, index);
-                    break;
+                            case 3:
+                            String phone = JOptionPane.showInputDialog(null, "Enter Phone Number:", "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+                            if (phone != null){
+                                index = searchEmployeeByPhone(employeeRoster, phone);
+                                printEmployeeReport(employeeRoster, index);
+                            }
+                            break;
 
-                    case 4:
-                    String email = JOptionPane.showInputDialog("Enter Email:");
-                    index = searchEmployeeByEmail(employeeRoster, email);
-                    printEmployeeReport(employeeRoster, index);
-                    break;
+                            case 4:
+                            String email = JOptionPane.showInputDialog(null, "Enter Email:", "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+                            if (email != null){
+                                index = searchEmployeeByEmail(employeeRoster, email);
+                                printEmployeeReport(employeeRoster, index);
+                            }
+                            break;
 
-                    case 5:
-                    break;
+                            case 5:
+                            break;
 
-                    default:
-                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 5!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    break;
-
-                }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                            default:
+                            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 5!", "Error!", JOptionPane.ERROR_MESSAGE);
+                            break;
+                            }
+                        if (choice != 5){
+                            choiceString = JOptionPane.showInputDialog(null, menu, "Search Employee", JOptionPane.INFORMATION_MESSAGE);
+                            if (choiceString == null){
+                                choice = 5;
+                            }
+                        }
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
+                }while(choice != 5);    
             }
         }
         else{
@@ -396,32 +749,42 @@ public class EnforcementHR {
     public static void manageInventory(Employee[] employeeRoster){
         if (Employee.getNumEmployees() > 0){
             String menu = "** Inventory Management **\n\n1. Assign an Inventory Item\n2. Return an Inventory Item\n3. Employee Inventory Audit\n4. Exit";
-            try{
-                switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                    case 1:
-                    assignInventoryItem(employeeRoster);
-                    break;
+            String choiceString = JOptionPane.showInputDialog(null, menu, "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
+            int choice = 0;
+            do{
+                if (choiceString != null){
+                    try{
+                        switch(choice = Integer.parseInt(choiceString)){
+                            case 1:
+                            assignInventoryItem(employeeRoster);
+                            break;
 
-                    case 2:
-                    returnInventoryItem(employeeRoster);
-                    break;
+                            case 2:
+                            returnInventoryItem(employeeRoster);
+                            break;
 
-                    case 3:
-                    auditInventoryItem(employeeRoster);
-                    break;
+                            case 3:
+                            auditInventoryItem(employeeRoster);
+                            break;
 
-                    case 4:
-                    break;
+                            case 4:
+                            break;
 
-                    default:
-                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 4!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    break;
-
+                            default:
+                            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 4!", "Error!", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        if (choice != 4){
+                            choiceString = JOptionPane.showInputDialog(null, menu, "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
+                            if (choiceString == null){
+                                choice = 4;
+                            }
+                        }
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            }
+            }while(choice != 4);
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -429,127 +792,145 @@ public class EnforcementHR {
     }
 
     public static void assignInventoryItem(Employee[] employeeRoster){
-        String id = JOptionPane.showInputDialog("Enter Employee ID:");
-        int searchIndex = searchEmployeeByID(employeeRoster, id);
-        try{
-            if (searchIndex >= 0){
-                if (employeeRoster[searchIndex].getNumInventoryItem() < Employee.getMaxInventoryItems()){
-                    String[] options = new String[] {"Laptop", "Cell Phone", "Patrol Car"};
-                    int itemType = JOptionPane.showOptionDialog(null, "What item would you like to assign " + employeeRoster[searchIndex].fullNameToString() + "?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
-                    if (employeeRoster[searchIndex].searchInventoryItem(itemType) == -1){
-                        employeeRoster[searchIndex].addInventoryItem(id, itemType);
-                        JOptionPane.showMessageDialog(null, "Item has been assigned to employee!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+        String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
+        if (id != null){
+            try{
+                int searchIndex = searchEmployeeByID(employeeRoster, id);
+                if (searchIndex >= 0){
+                    if (employeeRoster[searchIndex].getNumInventoryItem() < Employee.getMaxInventoryItems()){
+                        String[] options = new String[] {"Laptop", "Cell Phone", "Patrol Car"};
+                        int itemType = JOptionPane.showOptionDialog(null, "What item would you like to assign " + employeeRoster[searchIndex].fullNameToString() + "?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+                        if (employeeRoster[searchIndex].searchInventoryItem(itemType) == -1){
+                            employeeRoster[searchIndex].addInventoryItem(id, itemType);
+                            JOptionPane.showMessageDialog(null, "Item has been assigned to employee!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Item type already assigned to this employee!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     else{
-                        JOptionPane.showMessageDialog(null, "Item type already assigned to this employee!", "Error!", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "This employee has the maximum amount of items!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "This employee has the maximum amount of items!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void returnInventoryItem(Employee[] employeeRoster){
-        String id = JOptionPane.showInputDialog("Enter Employee ID:");
-        int searchIndex = searchEmployeeByID(employeeRoster, id);
-        try{
-            if (searchIndex >= 0){
-                if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
-                    String[] options = new String[employeeRoster[searchIndex].getNumInventoryItem()];
-                    for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
-                        if (employeeRoster[searchIndex].getInventoryType(i) == 0){
-                            options[i] = "Laptop";
+        String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
+        if (id != null){
+            try{
+                int searchIndex = searchEmployeeByID(employeeRoster, id);
+                if (searchIndex >= 0){
+                    if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
+                        String[] options = new String[employeeRoster[searchIndex].getNumInventoryItem()];
+                        for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
+                            if (employeeRoster[searchIndex].getInventoryType(i) == 0){
+                                options[i] = "Laptop";
+                            }
+                            if (employeeRoster[searchIndex].getInventoryType(i) == 1){
+                                options[i] = "Phone";
+                            }
+                            if (employeeRoster[searchIndex].getInventoryType(i) == 2){
+                                options[i] = "Patrol Car";
+                            }
                         }
-                        if (employeeRoster[searchIndex].getInventoryType(i) == 1){
-                            options[i] = "Phone";
+                        int choice = JOptionPane.showOptionDialog(null, "What item would you like " + employeeRoster[searchIndex].fullNameToString() + " to return?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+                        int itemType = -1;
+                        if (options[choice].equals("Laptop")){
+                            itemType = 0;
                         }
-                        if (employeeRoster[searchIndex].getInventoryType(i) == 2){
-                            options[i] = "Patrol Car";
+                        if (options[choice].equals("Phone")){
+                            itemType = 1;
                         }
+                        if (options[choice].equals("Patrol Car")){
+                            itemType = 2;
+                        }
+                        int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
+                        employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
+                        JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    int choice = JOptionPane.showOptionDialog(null, "What item would you like " + employeeRoster[searchIndex].fullNameToString() + " to return?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
-                    int itemType = -1;
-                    if (options[choice].equals("Laptop")){
-                        itemType = 0;
+                    else{
+                        JOptionPane.showMessageDialog(null, "Employee has not been assigned any items!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                    if (options[choice].equals("Phone")){
-                        itemType = 1;
-                    }
-                    if (options[choice].equals("Patrol Car")){
-                        itemType = 2;
-                    }
-                    int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
-                    employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
-                    JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Employee has not been assigned any items!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void auditInventoryItem(Employee[] employeeRoster){
-        String id = JOptionPane.showInputDialog("Enter Employee ID:");
-        int searchIndex = searchEmployeeByID(employeeRoster, id);
-        try{
-            if (searchIndex >= 0){
-                if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
-                    String report = "Employee ID: " + employeeRoster[searchIndex].getId() + "\n\n";
-                    report += employeeRoster[searchIndex].fullNameToString() + " has been assigned these items:";
-                    for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
-                        report += "\n" + employeeRoster[searchIndex].getInventoryString(i);
+        String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
+        if (id != null){
+            try{
+                int searchIndex = searchEmployeeByID(employeeRoster, id);
+                if (searchIndex >= 0){
+                    if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
+                        String report = "Employee ID: " + employeeRoster[searchIndex].getId() + "\n\n";
+                        report += employeeRoster[searchIndex].fullNameToString() + " has been assigned these items:";
+                        for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
+                            report += "\n" + employeeRoster[searchIndex].getInventoryString(i);
+                        }
+                        JOptionPane.showMessageDialog(null, report, "Employee Item Audit Report", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(null, report, "Employee Item Audit Report", JOptionPane.INFORMATION_MESSAGE);
+                    else{
+                        JOptionPane.showMessageDialog(null, "Employee has not been assigned any items!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "Employee has not been assigned any items!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
-            }
 
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     public static void generateReports(Employee[] employeeRoster){
         if (Employee.getNumEmployees() > 0){
             String menu = "** Generate Reports **\n\n1. Organization Report\n2. Inventory Report\n3. Exit";
-            try{
-                switch(Integer.parseInt(JOptionPane.showInputDialog(menu))){
-                    case 1:
-                    generateOrgReport(employeeRoster);
-                    break;
-                    
-                    case 2:
-                    generateInventoryReport(employeeRoster);
-                    break;
+            String choiceString = JOptionPane.showInputDialog(null, menu, "Report Generator", JOptionPane.INFORMATION_MESSAGE);
+            int choice = 0;
+            do{
+                if (choiceString != null){
+                    try{
+                        switch(choice = Integer.parseInt(choiceString)){
+                            case 1:
+                            generateOrgReport(employeeRoster);
+                            break;
+                            
+                            case 2:
+                            generateInventoryReport(employeeRoster);
+                            break;
 
-                    case 3:
-                    break;
+                            case 3:
+                            break;
 
-                    default:
-                    JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 3!", "Error!", JOptionPane.ERROR_MESSAGE);
-                    break;
+                            default:
+                            JOptionPane.showMessageDialog(null, "Please choose a number between 1 and 3!", "Error!", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        if (choice != 3){
+                            choiceString = JOptionPane.showInputDialog(null, menu, "Report Generator", JOptionPane.INFORMATION_MESSAGE);
+                            if (choiceString == null){
+                                choice = 3;
+                            }
+                        }
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            }
+            }while(choice !=3);
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
