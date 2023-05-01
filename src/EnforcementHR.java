@@ -1,14 +1,18 @@
 import javax.swing.*;
 public class EnforcementHR {
     public static void main(String[] args){
+        //Employee Object Data Stored in employeeRoster array
         Employee[] employeeRoster = new Employee[Employee.getMaxEmployees()];
         employeeRoster[0] = new ProfessionalStaff("Basil", "Ali", "addressStreet", "AddressCity", "VA", "22204", "703-999-9999", "workTitle", 10, "fieldOffice", "00211");
+        //Menu is shown and the choice is picked within choiceString, if user presses cancel it will skip switch and shut down the program.
         String menu = "HR Law Enforcement System\n\n1. Add New Employee\n2. Update Employee\n3. Remove Employee\n4. Search Employee\n5. Manage Employee Inventory\n6. Generate Reports\n7. Quit";
         String choiceString = JOptionPane.showInputDialog(null, menu, "HR System", JOptionPane.INFORMATION_MESSAGE);
         int choice = 0;
+        //Checks if user presses cancel "cancel button sends null to String"
         if (choiceString != null){
             do{
                 try{
+                    //Parses choice into an Integer for switch case
                     switch(choice = Integer.parseInt(choiceString)){
 
                         case 1:
@@ -46,6 +50,7 @@ public class EnforcementHR {
                 }catch(Exception e){
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                 }
+                //If other choice is made, then will prompt again and check for null send.
                 if (choice != 7){
                     choiceString = JOptionPane.showInputDialog(null, menu, "HR System", JOptionPane.INFORMATION_MESSAGE);
                     if (choiceString == null){
@@ -54,13 +59,14 @@ public class EnforcementHR {
                 }
             }while(choice != 7);
         }
+        //Sends powering off message and closes the program
         JOptionPane.showMessageDialog(null, "Powering off..");
         System.exit(0);
     }
 
     public static void addEmployee(Employee[] employeeRoster){
-
-        if (Employee.getNumEmployees() <= Employee.getMaxEmployees()){
+        //Checks if employee object is less than max employee
+        if (Employee.getNumEmployees() < Employee.getMaxEmployees()){
 
             //Creation of three new panels
             JPanel namePanel = new JPanel();
@@ -213,11 +219,13 @@ public class EnforcementHR {
         }
     }
 
+    //All search Employee functions check for match of specific user input, returns index of match if found, or sends -1
     public static int searchEmployeeByID(Employee[] employeeRoster, String id){
         int index = -1;
         for (int i = 0; i < Employee.getNumEmployees(); i++){
             if (id.equalsIgnoreCase(employeeRoster[i].getId())){
                 index = i;
+                break;
             }
         }
         return index;
@@ -228,6 +236,7 @@ public class EnforcementHR {
         for (int i = 0; i < Employee.getNumEmployees(); i++){
             if (name.equalsIgnoreCase(employeeRoster[i].fullNameToString())){
                 index = i;
+                break;
             }
         }
         return index;
@@ -238,6 +247,7 @@ public class EnforcementHR {
         for (int i = 0; i < Employee.getNumEmployees(); i++){
             if (phone.equalsIgnoreCase(employeeRoster[i].getPhoneNumber())){
                 index = i;
+                break;
             }
         }
         return index;
@@ -248,35 +258,40 @@ public class EnforcementHR {
         for (int i = 0; i < Employee.getNumEmployees(); i++){
             if (email.equalsIgnoreCase(employeeRoster[i].getWorkEmail())){
                 index = i;
+                break;
             }
         }
         return index;
     }
 
     public static void updateEmployee(Employee[] employeeRoster){
+        //Checks if any employee objects have been created
         if (Employee.getNumEmployees() > 0){
+            //Ask for employee ID, if null then update operation is cancelled
             String id = JOptionPane.showInputDialog("Enter Employee ID:");
             if (id == null){
                 JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
             }
+            //If not null, then searches for employee by ID, if search index is -1, will send an error, else it will provide switch menu to update employee
             else{
                 int search = searchEmployeeByID(employeeRoster, id);
                 if (search == -1){
                     JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 else{
+                    //Adds specific options based on employee type
                     String menu = "** Update Employee Data **\nID: " + employeeRoster[search].getId() + " [" + employeeRoster[search].fullNameToString() + "]\n";
-                    menu += "1. Update Name\n2. Update Address\n3. Update Salary\n4. Update Position\n5. Update Phone Number";
+                    menu += "1. Update Name\n2. Update Address\n3. Update Salary\n4. Update Position\n5. Update Phone Number\n6. Update Status";
                     if (employeeRoster[search] instanceof Agent){
-                        menu += "\n6. Update Agent Data";
+                        menu += "\n7. Update Agent Data";
                     }
                     if (employeeRoster[search] instanceof ProfessionalStaff){
-                        menu += "\n6. Update Professional Staff Data";
+                        menu += "\n7. Update Professional Staff Data";
                     }
                     if (employeeRoster[search] instanceof LabSpecialist){
-                        menu += "\n6. Update Lab Specialist Data";
+                        menu += "\n7. Update Lab Specialist Data";
                     }
-                    menu += "\n7. Exit";
+                    menu += "\n8. Exit";
                     String choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
                     int choice = 0;
                     if (choiceString != null){
@@ -304,10 +319,14 @@ public class EnforcementHR {
                                     break;
 
                                     case 6:
-                                    updateEmployeeTypeData(employeeRoster, search);
+                                    updateStatus(employeeRoster, search);
                                     break;
 
                                     case 7:
+                                    updateEmployeeTypeData(employeeRoster, search);
+                                    break;
+
+                                    case 8:
                                     break;
 
                                     default:
@@ -317,13 +336,13 @@ public class EnforcementHR {
                             }catch(Exception e){
                                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                             }
-                            if (choice != 7){
+                            if (choice != 8){
                                 choiceString = JOptionPane.showInputDialog(null, menu, "Update Employee", JOptionPane.INFORMATION_MESSAGE);
                                 if (choiceString == null){
-                                    choice = 7;
+                                    choice = 8;
                                 }
                             }
-                        }while(choice != 7);
+                        }while(choice != 8);
                     }
                 }
             }
@@ -478,6 +497,28 @@ public class EnforcementHR {
         }
     }
 
+    public static void updateStatus(Employee[] employeeRoster, int search){
+        String menu = "Current employee status: ";
+        if (employeeRoster[search].getIsActive() == true){
+            menu += "Active\nWoud you like to change it to Inactive?";
+        }
+        else if (employeeRoster[search].getIsActive() == false){
+            menu += "Inactive\nWould you like to change it to Active?";
+        }
+        int choiceStatus = JOptionPane.showConfirmDialog(null, menu, "Update Employee", JOptionPane.YES_NO_OPTION);
+        if (choiceStatus == JOptionPane.YES_OPTION){
+            if (employeeRoster[search].getIsActive() == true){
+                employeeRoster[search].setIsActive(false);
+            }
+            else if (employeeRoster[search].getIsActive() == false){
+                employeeRoster[search].setIsActive(true);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Update Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     public static void updateEmployeeTypeData(Employee[] employeeRoster, int search){
         //Agent Employee Type Update Options
         if (employeeRoster[search] instanceof Agent){
@@ -599,17 +640,22 @@ public class EnforcementHR {
     }
 
     public static void removeEmployee(Employee[] employeeRoster){
+        //Checks if any employee objects have been created, if so then continue, if not send error message
         if (Employee.getNumEmployees() > 0){
+            //Enter employee ID to search
             String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Remove Employee", JOptionPane.INFORMATION_MESSAGE);
             if (id != null){
+                //Searches employee by ID, if not found sends error message, if found continues
                 int search = searchEmployeeByID(employeeRoster, id);
                 if (search == -1){
                     JOptionPane.showMessageDialog(null, "Employee not found!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
                 else{
+                    //Grabs ID and store it in a string, then prompts confirmation message either to delete or not
                     String idDelete = employeeRoster[search].getId();
                     int deleteConfirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?\nID: " + idDelete + " [" + employeeRoster[search].fullNameToString(), "] Remove Employee", JOptionPane.YES_NO_OPTION);
 
+                    //If yes, updates nessecary trackers and deletes objecy by overwriting data in array and sends confirmation message
                     if (deleteConfirm == JOptionPane.YES_OPTION){
                         if (employeeRoster[search] instanceof Agent){
                             Agent.updateNumAgents();
@@ -631,6 +677,7 @@ public class EnforcementHR {
                         Employee.updateNumEmployees();
                         JOptionPane.showMessageDialog(null, "Employee ID: " + idDelete + " has been deleted!", "Deleted!", JOptionPane.INFORMATION_MESSAGE);
                     }
+        //If cancel or no has been done, then will send a message that the operation is cancelled
                     else{
                         JOptionPane.showMessageDialog(null, "Remove Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
                     }
@@ -640,6 +687,7 @@ public class EnforcementHR {
                 JOptionPane.showMessageDialog(null, "Remove Employee Operation Cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
             }
         }
+        //Sends error message if no employees
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
@@ -647,7 +695,9 @@ public class EnforcementHR {
     }
 
     public static void printEmployeeReport(Employee[] employeeRoster, int i){
+        //Checks if employee exists
         if (i >= 0){
+            //Sets up report for employee
             String report = "** Employee Report **\n\n";
             report += "ID: " + employeeRoster[i].getId() + "\nName: " + employeeRoster[i].fullNameToString() + "\nAddress: " + employeeRoster[i].addressToString() +
             "\nPhone number: " + employeeRoster[i].getPhoneNumber() + "\nEmail: " + employeeRoster[i].getWorkEmail() +
@@ -681,8 +731,10 @@ public class EnforcementHR {
     }
 
     public static void searchEmployee(Employee[] employeeRoster){
+        //Checks if an employee object has been made
         if (Employee.getNumEmployees() > 0){
             int index = -1;
+            //Gives switch menu options to search by type
             String menu = "** Search Employee **\n\n1. Search by ID\n2. Search by Name\n3. Search by Phone\n4. Search by Email\n5. Exit";
             String choiceString = JOptionPane.showInputDialog(null, menu, "Search Employee", JOptionPane.INFORMATION_MESSAGE);
             int choice = 0;
@@ -748,6 +800,7 @@ public class EnforcementHR {
 
     public static void manageInventory(Employee[] employeeRoster){
         if (Employee.getNumEmployees() > 0){
+            //Inventory Management switch options located here
             String menu = "** Inventory Management **\n\n1. Assign an Inventory Item\n2. Return an Inventory Item\n3. Employee Inventory Audit\n4. Exit";
             String choiceString = JOptionPane.showInputDialog(null, menu, "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
             int choice = 0;
@@ -792,6 +845,7 @@ public class EnforcementHR {
     }
 
     public static void assignInventoryItem(Employee[] employeeRoster){
+        //Askes for employee ID, checks if exists, then gives options to assign
         String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
         if (id != null){
             try{
@@ -800,6 +854,7 @@ public class EnforcementHR {
                     if (employeeRoster[searchIndex].getNumInventoryItem() < Employee.getMaxInventoryItems()){
                         String[] options = new String[] {"Laptop", "Cell Phone", "Patrol Car"};
                         int itemType = JOptionPane.showOptionDialog(null, "What item would you like to assign " + employeeRoster[searchIndex].fullNameToString() + "?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
+                        //Checks employee's inventory, if item has been assigned then adds to employee's inventory array, if not send error message
                         if (employeeRoster[searchIndex].searchInventoryItem(itemType) == -1){
                             employeeRoster[searchIndex].addInventoryItem(id, itemType);
                             JOptionPane.showMessageDialog(null, "Item has been assigned to employee!", "Success!", JOptionPane.INFORMATION_MESSAGE);
@@ -827,6 +882,7 @@ public class EnforcementHR {
             try{
                 int searchIndex = searchEmployeeByID(employeeRoster, id);
                 if (searchIndex >= 0){
+                    //Checks if employee has items in its inventory, then checks what they have and puts them as options
                     if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
                         String[] options = new String[employeeRoster[searchIndex].getNumInventoryItem()];
                         for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
@@ -840,6 +896,7 @@ public class EnforcementHR {
                                 options[i] = "Patrol Car";
                             }
                         }
+                        //If an item has been picked, it will send itemType based on option
                         int choice = JOptionPane.showOptionDialog(null, "What item would you like " + employeeRoster[searchIndex].fullNameToString() + " to return?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
                         int itemType = -1;
                         if (options[choice].equals("Laptop")){
@@ -851,10 +908,12 @@ public class EnforcementHR {
                         if (options[choice].equals("Patrol Car")){
                             itemType = 2;
                         }
+                        //Removes by overwriting Inventory array in Employee and sends confirmation message
                         int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
                         employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
                         JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
                     }
+            //All errors located under here:
                     else{
                         JOptionPane.showMessageDialog(null, "Employee has not been assigned any items!", "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -869,9 +928,11 @@ public class EnforcementHR {
     }
 
     public static void auditInventoryItem(Employee[] employeeRoster){
+        //Prompts for employee ID
         String id = JOptionPane.showInputDialog(null, "Enter Employee ID:", "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
         if (id != null){
             try{
+                //search employee ID, if found then will provide a report by checking Inventory array within Employee object
                 int searchIndex = searchEmployeeByID(employeeRoster, id);
                 if (searchIndex >= 0){
                     if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
@@ -897,6 +958,7 @@ public class EnforcementHR {
     }
 
     public static void generateReports(Employee[] employeeRoster){
+        //Checks if employee objects have been made, provides a switch for two different reports
         if (Employee.getNumEmployees() > 0){
             String menu = "** Generate Reports **\n\n1. Organization Report\n2. Inventory Report\n3. Exit";
             String choiceString = JOptionPane.showInputDialog(null, menu, "Report Generator", JOptionPane.INFORMATION_MESSAGE);
@@ -926,6 +988,7 @@ public class EnforcementHR {
                                 choice = 3;
                             }
                         }
+        //Error messages here:
                     }catch(Exception e){
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                     }
@@ -938,14 +1001,17 @@ public class EnforcementHR {
     }
     
     public static void generateOrgReport(Employee[] employeeRoster){
+        //Generates two dialogs, one for stats on employees, the second a list of active employees
         String report1 = "** Employee Stats **\n\nNumber of Employees: " + Employee.getNumEmployees() +
         "\nNumber of Agents: " + Agent.getNumAgents() + "\nNumber of Lab Specialists: " + LabSpecialist.getNumLabSpecialists() +
         "\nNumber of Professional Specialists: " + ProfessionalStaff.getNumProfStaff();
-        String report2 = "** Employee List **\n\n";
+        String report2 = "** Active Employee List **\n\n";
         double salary = 0;
         for (int i = 0; i < Employee.getNumEmployees(); i++){
-            report2 += employeeRoster[i].toString() + "\n";
-            salary += employeeRoster[i].getSalary();
+            if (employeeRoster[i].getIsActive() == true){
+                report2 += employeeRoster[i].toString() + "\n";
+                salary += employeeRoster[i].getSalary();
+            }
         }
         report1 += "\n\nTotal Employee Budget: " + String.format("$%.2f", salary);
         JOptionPane.showMessageDialog(null, report1, "Organization Report", JOptionPane.INFORMATION_MESSAGE);
@@ -953,6 +1019,7 @@ public class EnforcementHR {
     }
 
     public static void generateInventoryReport(Employee[] employeeRoster){
+        //Generates organization stats of inventory used, then sends list of employees and their inventory if applicable
         if (InventoryItem.numLaptopsUsed() == 0 && InventoryItem.numPhonesUsed() == 0 && InventoryItem.numPatrolCarsUsed() == 0){
             JOptionPane.showMessageDialog(null, "No inventory items have been assigned to any employee!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
@@ -962,6 +1029,7 @@ public class EnforcementHR {
             InventoryItem.numPhonesUsed() + " out of " + InventoryItem.getMaxPhones() + " phones have been used.\n" +
             InventoryItem.numPatrolCarsUsed() + " out of " + InventoryItem.getMaxPatrolCars() + " patrol cars have been used.";
             String report2 = "** Inventory List **\n";
+            int report2Count = 0;
             for (int i = 0; i < Employee.getNumEmployees(); i++){
                 if ((employeeRoster[i].getNumInventoryItem()) > 0){
                     report2 += "\n" + employeeRoster[i].getId() + ": " + employeeRoster[i].fullNameToString() + " assigned items: ";
@@ -972,11 +1040,14 @@ public class EnforcementHR {
                         else{
                             report2 += employeeRoster[i].getInventoryToString(j) + ", ";
                         }
+                        report2Count++;
                     }
                 }
             }
             JOptionPane.showMessageDialog(null, report1, "Inventory Report", JOptionPane.INFORMATION_MESSAGE);
-            JOptionPane.showMessageDialog(null, report2, "Inventory Report", JOptionPane.INFORMATION_MESSAGE);
+            if (report2Count > 0){
+                JOptionPane.showMessageDialog(null, report2, "Inventory Report", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
