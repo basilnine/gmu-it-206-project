@@ -884,34 +884,56 @@ public class EnforcementHR {
                 if (searchIndex >= 0){
                     //Checks if employee has items in its inventory, then checks what they have and puts them as options
                     if (employeeRoster[searchIndex].getNumInventoryItem() > 0){
-                        String[] options = new String[employeeRoster[searchIndex].getNumInventoryItem()];
+                        String[] options = new String[(employeeRoster[searchIndex].getNumInventoryItem()+1)];
+                        int optionNum = 0;
                         for (int i = 0; i < employeeRoster[searchIndex].getNumInventoryItem(); i++){
                             if (employeeRoster[searchIndex].getInventoryType(i) == 0){
                                 options[i] = "Laptop";
+                                optionNum++;
                             }
                             if (employeeRoster[searchIndex].getInventoryType(i) == 1){
                                 options[i] = "Phone";
+                                optionNum++;
                             }
                             if (employeeRoster[searchIndex].getInventoryType(i) == 2){
                                 options[i] = "Patrol Car";
+                                optionNum++;
                             }
                         }
+                        options[(optionNum)] = "Cancel";
                         //If an item has been picked, it will send itemType based on option
                         int choice = JOptionPane.showOptionDialog(null, "What item would you like " + employeeRoster[searchIndex].fullNameToString() + " to return?", "Title", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, options[0]);
                         int itemType = -1;
                         if (options[choice].equals("Laptop")){
                             itemType = 0;
+                            int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
+                            employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
+                            JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                 
                         }
-                        if (options[choice].equals("Phone")){
+                        else if (options[choice].equals("Phone")){
                             itemType = 1;
+                            int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
+                            employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
+                            JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                 
                         }
-                        if (options[choice].equals("Patrol Car")){
+                        else if (options[choice].equals("Patrol Car")){
                             itemType = 2;
+                            int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
+                            employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
+                            JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                 
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(null, "Item Operation has been cancelled!", "Cancelled!", JOptionPane.WARNING_MESSAGE);
                         }
                         //Removes by overwriting Inventory array in Employee and sends confirmation message
+                        /*
                         int inventorySearchIndex = employeeRoster[searchIndex].searchInventoryItem(itemType);
                         employeeRoster[searchIndex].removeInventoryItem(inventorySearchIndex);
                         JOptionPane.showMessageDialog(null, "Item has been successfully returned to Inventory!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    */
                     }
             //All errors located under here:
                     else{
