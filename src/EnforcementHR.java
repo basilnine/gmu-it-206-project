@@ -3,7 +3,8 @@ public class EnforcementHR {
     public static void main(String[] args){
         //Employee Object Data Stored in employeeRoster array
         Employee[] employeeRoster = new Employee[Employee.getMaxEmployees()];
-        employeeRoster[0] = new ProfessionalStaff("Basil", "Ali", "addressStreet", "AddressCity", "VA", "22204", "703-999-9999", "workTitle", 10, "fieldOffice", "00211");
+        //Hard coded test sample
+        employeeRoster[0] = new ProfessionalStaff("Basil", "Ali", "1800 Columbia Pike", "Arlington", "VA", "22204", "703-999-9999", "Cybersecurity Analyst", 100000, "Washington", "00211");
         //Menu is shown and the choice is picked within choiceString, if user presses cancel it will skip switch and shut down the program.
         String menu = "HR Law Enforcement System\n\n1. Add New Employee\n2. Update Employee\n3. Remove Employee\n4. Search Employee\n5. Manage Employee Inventory\n6. Generate Reports\n7. Quit";
         String choiceString = JOptionPane.showInputDialog(null, menu, "HR System", JOptionPane.INFORMATION_MESSAGE);
@@ -804,8 +805,8 @@ public class EnforcementHR {
             String menu = "** Inventory Management **\n\n1. Assign an Inventory Item\n2. Return an Inventory Item\n3. Employee Inventory Audit\n4. Exit";
             String choiceString = JOptionPane.showInputDialog(null, menu, "Inventory Management", JOptionPane.INFORMATION_MESSAGE);
             int choice = 0;
-            do{
-                if (choiceString != null){
+            if (choiceString != null){
+                do{
                     try{
                         switch(choice = Integer.parseInt(choiceString)){
                             case 1:
@@ -836,8 +837,8 @@ public class EnforcementHR {
                     }catch(Exception e){
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-            }while(choice != 4);
+                }while(choice != 4);
+            }
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -985,8 +986,8 @@ public class EnforcementHR {
             String menu = "** Generate Reports **\n\n1. Organization Report\n2. Inventory Report\n3. Exit";
             String choiceString = JOptionPane.showInputDialog(null, menu, "Report Generator", JOptionPane.INFORMATION_MESSAGE);
             int choice = 0;
-            do{
-                if (choiceString != null){
+            if (choiceString != null){
+                do{
                     try{
                         switch(choice = Integer.parseInt(choiceString)){
                             case 1:
@@ -1014,8 +1015,8 @@ public class EnforcementHR {
                     }catch(Exception e){
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-            }while(choice !=3);
+                }while(choice !=3);
+            }
         }
         else{
             JOptionPane.showMessageDialog(null, "There are no employees!", "Error!", JOptionPane.ERROR_MESSAGE);

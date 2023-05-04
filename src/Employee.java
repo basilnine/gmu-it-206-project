@@ -148,6 +148,10 @@ public abstract class Employee {
     }
 
     public void setFirstName(String firstName) {
+        //if first name is empty, throw an exception
+        if (firstName == null || firstName.isEmpty()) {
+            throw new IllegalArgumentException("First name cannot be empty");
+        }
         //validate that the first letter is capitalized
         if (firstName.charAt(0) != firstName.toUpperCase().charAt(0)) {
             throw new IllegalArgumentException("First name must be capitalized");
@@ -191,6 +195,9 @@ public abstract class Employee {
     public void setAddressStreet(String addressStreet) {
         if (addressStreet == null || addressStreet.isEmpty()) {
             throw new IllegalArgumentException("Address cannot be empty");
+        }
+        if (!addressStreet.contains(" ")){
+            throw new IllegalArgumentException("Address must have include a space");
         }
         this.addressStreet = addressStreet;
     }
